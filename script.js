@@ -126,30 +126,26 @@ function typeBio() {
 }
 setTimeout(typeBio, 1000);
 
-/* ─── 5. Stat counters ─────────────────────────────────── */
-function easeOut(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
+/* ─── 5. Profile view counter (localStorage) ───────────── */
+const viewsEl = document.getElementById('viewsNum');
 
-function countUp(el, target, duration) {
+(function initViews() {
+  const KEY = 'gabkoss_profile_views';
+  let count = parseInt(localStorage.getItem(KEY) || '0', 10);
+  count += 1;
+  localStorage.setItem(KEY, count);
+
+  // animate counting up to the stored value
+  const duration = 1400;
   const start = performance.now();
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
   (function step(now) {
-    const t   = Math.min((now - start) / duration, 1);
-    el.textContent = Math.round(easeOut(t) * target).toLocaleString();
+    const t = Math.min((now - start) / duration, 1);
+    const val = Math.round(easeOut(t) * count);
+    viewsEl.textContent = val.toLocaleString();
     if (t < 1) requestAnimationFrame(step);
   })(performance.now());
-}
-
-const io = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      countUp(el, parseInt(el.dataset.val, 10), 1600);
-      io.unobserve(el);
-    }
-  });
-}, { threshold: 0.2 });
-document.querySelectorAll('.stat-n').forEach(el => io.observe(el));
+})();
 
 /* ─── 6. Social row ripple click ───────────────────────── */
 document.querySelectorAll('.social-row').forEach(row => {

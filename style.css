@@ -434,45 +434,35 @@ body {
   transition: opacity 0.22s, transform 0.22s;
 }
 
-/* hover glow lines per platform */
-.discord:hover  { border-color: rgba(88,101,242,0.35); }
-.telegram:hover { border-color: rgba(38,165,228,0.35); }
-.youtube:hover  { border-color: rgba(255,51,51,0.35);  }
-.twitch:hover   { border-color: rgba(145,70,255,0.35); }
+/* hover glow per platform */
+.discord:hover { border-color: rgba(88,101,242,0.4); }
 
-/* ── Stats ──────────────────────────────────────────────── */
-.stats {
+/* ── Views counter ──────────────────────────────────────── */
+.views-block {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
   padding: 0 20px;
   opacity: 0;
   animation: slideUp 0.55s cubic-bezier(0.22,1,0.36,1) 0.9s both;
 }
-.stat {
-  flex: 1;
-  text-align: center;
+.views-block svg {
+  color: var(--c-muted);
+  flex-shrink: 0;
 }
-.stat-n {
-  font-size: 1.15rem;
+.views-num {
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--c-text);
   font-variant-numeric: tabular-nums;
 }
-.stat-l {
-  font-size: 0.67rem;
+.views-lbl {
+  font-size: 0.7rem;
   font-family: 'JetBrains Mono', monospace;
   color: var(--c-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-top: 2px;
-}
-.stat-line {
-  width: 1px;
-  height: 32px;
-  background: var(--c-border);
-  flex-shrink: 0;
+  letter-spacing: 0.04em;
 }
 
 /* ── Music Player ───────────────────────────────────────── */
