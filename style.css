@@ -116,19 +116,7 @@ body::before {
   mix-blend-mode: overlay;
   opacity: 0.5;
   pointer-events: none;
-  animation: grain 0.1s steps(1) infinite;
-}
-@keyframes grain {
-  0%  { background-position:   0px   0px; }
-  10% { background-position: -45px -75px; }
-  20% { background-position:  75px  20px; }
-  30% { background-position: -25px  55px; }
-  40% { background-position:  55px -35px; }
-  50% { background-position: -70px  15px; }
-  60% { background-position:  20px  70px; }
-  70% { background-position: -55px -20px; }
-  80% { background-position:  35px  45px; }
-  90% { background-position: -10px -55px; }
+  /* grain animation removed — caused constant full-page repaints */
 }
 
 /* Layer 3 — vignette + colour toning */
@@ -165,8 +153,10 @@ body::before {
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
+  top: 0; left: 0;
   transform: translate(-50%,-50%);
   transition: width .2s, height .2s, border-color .2s, background .2s;
+  will-change: transform;
 }
 .cursor-dot {
   position: fixed;
@@ -176,7 +166,9 @@ body::before {
   border-radius: 50%;
   pointer-events: none;
   z-index: 10000;
+  top: 0; left: 0;
   transform: translate(-50%,-50%);
+  will-change: transform;
 }
 .cursor.hovering {
   width: 44px;
@@ -207,8 +199,8 @@ body::before {
   background: var(--c-card);
 
   /* heavy blur so the background shows through nicely */
-  backdrop-filter: blur(48px) saturate(180%) brightness(0.88);
-  -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(0.88);
+  backdrop-filter: blur(24px) saturate(160%) brightness(0.88);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(0.88);
 
   border: 1px solid rgba(255,255,255,0.09);
   border-radius: var(--r-card);

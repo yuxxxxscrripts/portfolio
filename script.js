@@ -1,20 +1,20 @@
-/* ─── 1. Custom cursor ─────────────────────────────────── */
+/* ─── 1. Custom cursor (GPU-accelerated, no lag) ────────── */
 const cursorRing = document.getElementById('cursor');
 const cursorDot  = document.getElementById('cursorDot');
 let mx = 0, my = 0, rx = 0, ry = 0;
+let rafCursor = null;
 
 document.addEventListener('mousemove', e => {
   mx = e.clientX;
   my = e.clientY;
-  cursorDot.style.left = mx + 'px';
-  cursorDot.style.top  = my + 'px';
-});
+  // Dot: instant, use transform instead of left/top
+  cursorDot.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+}, { passive: true });
 
 (function lerpCursor() {
-  rx += (mx - rx) * 0.13;
-  ry += (my - ry) * 0.13;
-  cursorRing.style.left = rx + 'px';
-  cursorRing.style.top  = ry + 'px';
+  rx += (mx - rx) * 0.22;   // faster lerp = less perceived lag
+  ry += (my - ry) * 0.22;
+  cursorRing.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
   requestAnimationFrame(lerpCursor);
 })();
 
@@ -24,7 +24,10 @@ document.querySelectorAll('a, button, .badge, .avatar-wrap').forEach(el => {
   el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
 });
 
-/* ─── 2. Particle canvas ───────────────────────────────── */
+/* ─── 2. Particle canvas (optimised) ──────────────────────
+   - Reduced dot count from 60 → 40
+   - Connection line check throttled: only runs every 2nd frame
+   - Uses requestAnimationFrame naturally                       */
 const canvas = document.getElementById('particles-canvas');
 const ctx    = canvas.getContext('2d');
 let W, H;
@@ -34,14 +37,17 @@ function resize() {
   H = canvas.height = window.innerHeight;
 }
 resize();
-window.addEventListener('resize', resize);
+window.addEventListener('resize', resize, { passive: true });
 
-const COLS = ['rgba(129,140,248,A)', 'rgba(56,189,248,A)', 'rgba(168,85,247,A)', 'rgba(255,255,255,A)'];
+const COLS = [
+  'rgba(129,140,248,A)',
+  'rgba(56,189,248,A)',
+  'rgba(168,85,247,A)',
+  'rgba(255,255,255,A)'
+];
 
 class Dot {
-  constructor(scatter) {
-    this.reset(scatter);
-  }
+  constructor(scatter) { this.reset(scatter); }
   reset(scatter) {
     this.x     = Math.random() * W;
     this.y     = scatter ? Math.random() * H : H + 6;
@@ -67,10 +73,14 @@ class Dot {
   }
 }
 
-const dots = Array.from({ length: 60 }, () => new Dot(true));
+// Fewer dots = much less GPU work, still looks great
+const dots = Array.from({ length: 40 }, () => new Dot(true));
 
-// subtle connection lines
+let lineFrame = 0;
 function drawLines() {
+  // Only recalc lines every 2nd frame
+  lineFrame++;
+  if (lineFrame % 2 !== 0) return;
   const MAX = 80;
   for (let i = 0; i < dots.length; i++) {
     for (let j = i + 1; j < dots.length; j++) {
@@ -96,18 +106,28 @@ function drawLines() {
   requestAnimationFrame(loop);
 })();
 
-/* ─── 3. Card 3D tilt ──────────────────────────────────── */
+/* ─── 3. Card 3D tilt (throttled to rAF) ──────────────── */
 const card = document.getElementById('card');
+let tiltPending = false, lastEx = 0, lastEy = 0;
 
 document.addEventListener('mousemove', e => {
-  const r   = card.getBoundingClientRect();
-  const cx  = r.left + r.width  / 2;
-  const cy  = r.top  + r.height / 2;
-  const nx  = (e.clientX - cx) / (r.width  / 2); // -1 to 1
-  const ny  = (e.clientY - cy) / (r.height / 2);
-  const deg = 5;
-  card.style.transform = `perspective(1000px) rotateX(${-ny * deg}deg) rotateY(${nx * deg}deg)`;
-});
+  lastEx = e.clientX;
+  lastEy = e.clientY;
+  if (!tiltPending) {
+    tiltPending = true;
+    requestAnimationFrame(() => {
+      tiltPending = false;
+      const r   = card.getBoundingClientRect();
+      const cx  = r.left + r.width  / 2;
+      const cy  = r.top  + r.height / 2;
+      const nx  = (lastEx - cx) / (r.width  / 2);
+      const ny  = (lastEy - cy) / (r.height / 2);
+      const deg = 5;
+      card.style.transform = `perspective(1000px) rotateX(${-ny * deg}deg) rotateY(${nx * deg}deg)`;
+    });
+  }
+}, { passive: true });
+
 document.addEventListener('mouseleave', () => {
   card.style.transform = '';
 });
@@ -135,14 +155,12 @@ const viewsEl = document.getElementById('viewsNum');
   count += 1;
   localStorage.setItem(KEY, count);
 
-  // animate counting up to the stored value
   const duration = 1400;
   const start = performance.now();
   function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
   (function step(now) {
     const t = Math.min((now - start) / duration, 1);
-    const val = Math.round(easeOut(t) * count);
-    viewsEl.textContent = val.toLocaleString();
+    viewsEl.textContent = Math.round(easeOut(t) * count).toLocaleString();
     if (t < 1) requestAnimationFrame(step);
   })(performance.now());
 })();
@@ -174,17 +192,23 @@ rStyle.textContent = '@keyframes ripple { to { transform:scale(1); opacity:0; } 
 document.head.appendChild(rStyle);
 
 /* ─── 7. Music player ──────────────────────────────────── */
-const audio   = document.getElementById('audio');
-const playBtn = document.getElementById('playBtn');
-const icoPlay = document.getElementById('ico-play');
-const icoPause= document.getElementById('ico-pause');
-const eqBars  = document.getElementById('eqBars');
-let   playing = false;
+const audio    = document.getElementById('audio');
+const playBtn  = document.getElementById('playBtn');
+const icoPlay  = document.getElementById('ico-play');
+const icoPause = document.getElementById('ico-pause');
+const eqBars   = document.getElementById('eqBars');
+let   playing  = false;
 
 function setPlay(state) {
   playing = state;
   if (state) {
-    audio.play().catch(() => {});
+    audio.play().catch(() => {
+      // Autoplay blocked — wait for next user gesture
+      playing = false;
+      icoPlay.style.display  = '';
+      icoPause.style.display = 'none';
+      eqBars.classList.remove('active');
+    });
     icoPlay.style.display  = 'none';
     icoPause.style.display = '';
     eqBars.classList.add('active');
@@ -198,12 +222,35 @@ function setPlay(state) {
 
 playBtn.addEventListener('click', () => setPlay(!playing));
 
-// autoplay on first interaction
-let didAuto = false;
-function autoplay() {
-  if (!didAuto) { didAuto = true; setPlay(true); }
-  document.removeEventListener('click', autoplay);
-  document.removeEventListener('keydown', autoplay);
+/* ── Autoplay: attempt immediately, then retry on first gesture ─
+   Browsers require the page to be visible and a gesture to have
+   occurred. We try right away (works if user navigated via click),
+   and if blocked we hook every possible first-interaction event.   */
+function tryAutoplay() {
+  audio.play().then(() => {
+    playing = true;
+    icoPlay.style.display  = 'none';
+    icoPause.style.display = '';
+    eqBars.classList.add('active');
+    removeAutoplayListeners();
+  }).catch(() => {
+    // Still blocked — listeners below will retry on first touch/key/scroll
+  });
 }
-document.addEventListener('click', autoplay);
-document.addEventListener('keydown', autoplay);
+
+function onFirstInteraction() {
+  if (!playing) tryAutoplay();
+}
+
+function removeAutoplayListeners() {
+  ['click','keydown','touchstart','scroll','pointerdown'].forEach(evt => {
+    document.removeEventListener(evt, onFirstInteraction);
+  });
+}
+
+['click','keydown','touchstart','scroll','pointerdown'].forEach(evt => {
+  document.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
+});
+
+// Try immediately — succeeds in many cases (tab opened via click, etc.)
+tryAutoplay();
