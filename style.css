@@ -41,12 +41,50 @@ body {
 }
 
 /* ── Background ─────────────────────────────────────────── */
+/*
+  IMAGE SIZE GUIDE:
+  ─────────────────────────────────────────────────────────
+  The bgDrift animation scales the image up to 1.10× and
+  also shifts it by 14px, so the browser needs more pixels
+  than the viewport itself.
+
+  Minimum safe sizes:
+    1080p monitor  → use a 2560×1440  image  (≥ 2 MP)
+    1440p monitor  → use a 3200×1800  image
+    4K  monitor    → use a 3840×2160  image  (native 4K)
+
+  Format tips:
+    • WebP   → best: smallest file, lossless or high-quality
+               lossy. Export at quality 90+ from Photoshop /
+               Squoosh / cwebp.
+    • AVIF   → even smaller than WebP, great for modern
+               browsers. Use quality 80+.
+    • JPEG   → fine if you have no other option; export at
+               90–95 quality, progressive JPEG helps.
+    • PNG    → avoid for photos — enormous file size and no
+               quality advantage over WebP/AVIF.
+
+  Never scale a 1080p image to fill a 4K screen.
+  ─────────────────────────────────────────────────────────
+*/
 .bg-image {
   position: fixed;
   inset: 0;
+
+  /* Use background.webp if you have it, otherwise background.png */
   background: url('background.png') center / cover no-repeat;
+
+  /* Crisp rendering — tells the browser to use its best
+     interpolation algorithm instead of the fast/blurry one */
+  image-rendering: -webkit-optimize-contrast; /* Safari/older Chrome */
+  image-rendering: crisp-edges;               /* Firefox             */
+  image-rendering: high-quality;              /* Chrome 80+          */
+
   animation: bgDrift 25s ease-in-out infinite alternate;
   z-index: 0;
+
+  /* Start slightly larger so the drift never shows a gap */
+  will-change: transform;
 }
 @keyframes bgDrift {
   from { transform: scale(1.06) translate(0, 0); }
