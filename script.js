@@ -44,7 +44,7 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(lerpCursor);
 })();
 
-document.querySelectorAll('a, button, .badge, .avatar-wrap').forEach(el => {
+document.querySelectorAll('a, button, .badge, .avatar-wrap, .shop-btn').forEach(el => {
   el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering'));
   el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
 });
