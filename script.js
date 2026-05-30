@@ -147,7 +147,7 @@ card.style.transition = 'transform 0.2s ease';
 
 /* ─── 5. Typing bio ────────────────────────────────────── */
 const bio    = document.getElementById('bioEl');
-const bioStr = 'just a person doing things on the internet. discord nerd & vibe curator ✦';
+const bioStr = 'Just a person doing things on the webssss.';
 let bioIdx   = 0;
 
 function typeBio() {
