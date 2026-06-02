@@ -2,501 +2,188 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gabkoss</title>
-  <style>
-    /* ── Reset & base ─────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --c-bg:        #080808;
-      --c-card:      rgba(12,12,12,0.55);
-      --c-border:    rgba(255,255,255,0.07);
-      --c-border-hi: rgba(255,255,255,0.18);
-      --c-text:      #f0f0f0;
-      --c-muted:     rgba(240,240,240,0.38);
-      --c-accent:    #d4d4d4;
-      --c-white:     #ffffff;
-      --r-card: 20px;
-      --r-row:  12px;
-      --shadow: 0 40px 120px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.05);
-    }
-
-    html { font-size: 16px; }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--c-bg);
-      color: var(--c-text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: none;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Splash screen (click to enter) ───────────────────────── */
-    #splash {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      background: #050505;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      cursor: none;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    #splash.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .splash-line {
-      width: 38px;
-      height: 1px;
-      background: rgba(255,255,255,0.15);
-      animation: splashPulse 2.2s ease-in-out infinite;
-    }
-    .splash-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.28);
-      animation: splashPulse 2.2s ease-in-out infinite 0.4s;
-    }
-    .splash-click {
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: rgba(255,255,255,0.72);
-      margin: 6px 0;
-    }
-    @keyframes splashPulse {
-      0%,100% { opacity: 0.5; } 50% { opacity: 1; }
-    }
-
-    /* Background layers */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background: radial-gradient(ellipse 120% 80% at 15% 110%, #1a1a1a 0%, transparent 55%),
-                  radial-gradient(ellipse 90%  65% at 85%  -5%, #111111 0%, transparent 52%),
-                  #080808;
-    }
-    .bg-image {
-      position: fixed;
-      inset: -12%;
-      width: 124%; height: 124%;
-      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJhIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgxNSkiPjxwYXRoIGQ9Ik0yMCAxMGwxMCAxMC0xMCAxMC0xMC0xMHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIwLjMiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjYSkiLz48L3N2Zz4=') center/cover no-repeat;
-      filter: grayscale(1) brightness(0.22) contrast(1.1);
-      animation: bgDrift 30s ease-in-out infinite alternate;
-      z-index: 0;
-      will-change: transform;
-      opacity: 0.4;
-    }
-    @keyframes bgDrift {
-      0%   { transform: scale(1)    translate(0, 0);       }
-      100% { transform: scale(1.02) translate(6px, -5px); }
-    }
-    .bg-vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.88) 100%);
-      z-index: 1;
-    }
-    #particles-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* Custom cursor */
-    .cursor, .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; will-change: transform; }
-    .cursor {
-      width: 26px; height: 26px;
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 50%;
-      transition: width .18s, height .18s, background .18s;
-      transform: translate(-50%,-50%);
-    }
-    .cursor-dot {
-      width: 3px; height: 3px;
-      background: #fff;
-      border-radius: 50%;
-      z-index: 10000;
-      transform: translate(-50%,-50%);
-    }
-    .cursor.hovering { width: 42px; height: 42px; background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.7); }
-
-    /* page layout */
-    .page { position: relative; z-index: 10; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
-
-    /* Card */
-    .card {
-      position: relative;
-      width: 100%;
-      max-width: 390px;
-      background: var(--c-card);
-      backdrop-filter: blur(28px) saturate(120%) brightness(0.7);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--r-card);
-      padding: 0 0 28px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(24px);
-      animation: cardEnter 0.75s cubic-bezier(0.22,1,0.36,1) 0.1s both;
-    }
-    @keyframes cardEnter { to { opacity: 1; transform: translateY(0); } }
-    .card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(155deg, rgba(255,255,255,0.035) 0%, transparent 45%, rgba(0,0,0,0.1) 100%);
-      pointer-events: none;
-    }
-    .card-top-bar {
-      height: 2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.12) 80%, transparent 100%);
-      background-size: 200% 100%;
-      animation: barShimmer 3.5s linear infinite;
-      margin-bottom: 30px;
-    }
-    @keyframes barShimmer { 0% { background-position: 200% 0%; } 100% { background-position: -200% 0%; } }
-
-    /* Avatar */
-    .avatar-wrap { position: relative; width: 86px; height: 86px; margin: 0 auto 16px; opacity: 0; transform: scale(0.88); animation: fadeScaleIn 0.6s cubic-bezier(0.22,1,0.36,1) 0.35s both; }
-    @keyframes fadeScaleIn { to { opacity: 1; transform: scale(1); } }
-    .avatar-ring {
-      position: absolute; inset: -3px; border-radius: 50%;
-      background: conic-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.6) 70%, rgba(255,255,255,0) 100%);
-      animation: ringRotate 5s linear infinite;
-    }
-    @keyframes ringRotate { to { transform: rotate(360deg); } }
-    .avatar-ring::after { content: ''; position: absolute; inset: 3px; background: #0d0d0d; border-radius: 50%; }
-    .avatar-img { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); border-radius: 50%; object-fit: cover; background: #1a1a1a; z-index: 1; filter: grayscale(0.1); transition: transform 0.4s, filter 0.3s; }
-    .avatar-wrap:hover .avatar-img { transform: scale(1.06); filter: grayscale(0); }
-    .status-dot {
-      position: absolute; bottom: 3px; right: 3px; width: 13px; height: 13px;
-      background: #d4d4d4; border-radius: 50%; border: 2.5px solid #0d0d0d;
-      animation: statusPulse 2.5s ease-in-out infinite;
-    }
-    @keyframes statusPulse { 0%,100% { box-shadow: 0 0 6px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 14px rgba(255,255,255,0.5); } }
-
-    /* name group */
-    .name-group { text-align: center; padding: 0 24px; margin-bottom: 12px; opacity: 0; transform: translateY(10px); animation: slideUp 0.55s cubic-bezier(0.22,1,0.36,1) 0.45s both; }
-    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-    .name { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.035em; color: var(--c-white); display: inline-flex; align-items: center; gap: 6px; }
-    .verified-badge { display: inline-flex; color: rgba(255,255,255,0.55); margin-top: 1px; }
-    .handle { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--c-muted); margin-top: 4px; }
-
-    .bio { font-size: 0.80rem; font-family: 'JetBrains Mono', monospace; color: var(--c-muted); text-align: center; line-height: 1.65; padding: 0 28px; min-height: 36px; margin-bottom: 16px; opacity: 0; animation: slideUp 0.55s 0.52s both; }
-    .badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; padding: 0 24px; margin-bottom: 20px; opacity: 0; animation: slideUp 0.55s 0.58s both; }
-    .badge { font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: var(--c-muted); padding: 3px 10px; border-radius: 99px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); transition: all 0.22s; cursor: default; }
-    .badge:hover { color: var(--c-text); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.22); transform: translateY(-1px); }
-    .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 0 24px 14px; opacity: 0; animation: slideUp 0.5s ease 0.62s both; }
-
-    /* shop section */
-    .shop-wrap { padding: 0 18px; margin-bottom: 16px; opacity: 0; animation: slideUp 0.6s 0.72s both; }
-    .shop-btn {
-      position: relative; display: flex; align-items: center; gap: 10px; padding: 13px 16px; border-radius: 14px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); text-decoration: none; color: var(--c-white);
-      overflow: hidden; cursor: none; transition: all 0.25s; margin-bottom: 10px;
-      animation: shopGlow 3s ease-in-out infinite;
-    }
-    .shop-btn:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.45); transform: translateY(-2px); animation: none; }
-    .shop-btn:hover .shop-arrow { opacity: 1; transform: translateX(0); }
-    @keyframes shopGlow { 0%,100% { box-shadow: 0 0 14px rgba(255,255,255,0.06); } 50% { box-shadow: 0 0 28px rgba(255,255,255,0.16); } }
-    .shop-shine { position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.07) 50%, transparent 80%); animation: shopShine 3s ease-in-out infinite 1.5s; pointer-events: none; }
-    @keyframes shopShine { 0% { left: -100%; } 40% { left: 150%; } 100% { left: 150%; } }
-    .shop-icon { width: 34px; height: 34px; border-radius: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.85); transition: transform 0.22s; }
-    .shop-btn:hover .shop-icon { transform: scale(1.12) rotate(-6deg); background: rgba(255,255,255,0.18); }
-    .shop-label { font-size: 0.88rem; font-weight: 600; }
-    .shop-sublabel { font-size: 0.62rem; font-family: 'JetBrains Mono', monospace; color: rgba(255,255,255,0.3); }
-    .shop-text { flex: 1; display: flex; flex-direction: column; gap: 1px; }
-    .shop-arrow { flex-shrink: 0; color: rgba(255,255,255,0.5); opacity: 0; transform: translateX(-5px); transition: opacity 0.2s, transform 0.2s; }
-    .shop-products { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 2px; }
-    .sp-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: rgba(255,255,255,0.42); padding: 3px 9px; border-radius: 99px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); transition: 0.2s; }
-    .sp-pill:hover { color: rgba(255,255,255,0.72); background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.16); }
-
-    /* socials */
-    .socials { display: flex; flex-direction: column; gap: 6px; padding: 0 18px; margin-bottom: 16px; opacity: 0; animation: slideUp 0.6s 0.66s both; }
-    .social-row {
-      display: flex; align-items: center; gap: 11px; padding: 10px 13px; border-radius: var(--r-row);
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); text-decoration: none; color: var(--c-text);
-      transition: 0.2s; position: relative; overflow: hidden; cursor: none;
-    }
-    .social-row:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); transform: translateX(3px); }
-    .social-row:hover .s-arrow { opacity: 1; transform: translateX(0); }
-    .s-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.07); transition: transform 0.22s; }
-    .social-row:hover .s-icon { transform: scale(1.1); }
-    .s-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-    .s-name { font-size: 0.84rem; font-weight: 500; }
-    .s-sub { font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: var(--c-muted); }
-    .s-arrow { flex-shrink: 0; opacity: 0; transform: translateX(-4px); transition: 0.2s; }
-
-    /* views block */
-    .views-block { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 20px; opacity: 0; animation: slideUp 0.55s 0.88s both; }
-    .views-num { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.04em; color: var(--c-white); font-variant-numeric: tabular-nums; }
-    .views-lbl { font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: var(--c-muted); }
-
-    /* music player */
-    .player {
-      position: fixed; bottom: 20px; right: 20px; z-index: 100;
-      display: flex; align-items: center; gap: 9px; padding: 8px 14px 8px 8px;
-      background: rgba(8,8,8,0.72); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 99px; opacity: 0; transform: translateY(12px); animation: slideUp 0.5s ease 1.4s both;
-    }
-    .play-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; cursor: none; transition: 0.2s; }
-    .play-btn:hover { background: rgba(255,255,255,0.92); color: #080808; transform: scale(1.1); }
-    .eq-bars { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
-    .eq-bars i { display: block; width: 3px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 2px; }
-    .eq-bars.active i { background: rgba(255,255,255,0.85); }
-    .eq-bars.active i:nth-child(1) { animation: eq 0.90s infinite; }
-    .eq-bars.active i:nth-child(2) { animation: eq 0.70s 0.10s infinite; }
-    .eq-bars.active i:nth-child(3) { animation: eq 1.10s 0.20s infinite; }
-    .eq-bars.active i:nth-child(4) { animation: eq 0.80s 0.05s infinite; }
-    .eq-bars.active i:nth-child(5) { animation: eq 0.95s 0.15s infinite; }
-    @keyframes eq { 0%,100% { height: 3px; } 50% { height: 13px; } }
-    .track-name { font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: var(--c-muted); max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    @media (max-width: 440px) { .card { border-radius: 16px; } .name { font-size: 1.25rem; } .player { bottom: 14px; right: 14px; } }
-  </style>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-<div id="splash">
-  <div class="splash-line"></div>
-  <p class="splash-click">click to enter</p>
-  <p class="splash-text">gabkoss.lol</p>
-  <div class="splash-line"></div>
-</div>
-
-<div class="bg-image"></div>
-<div class="bg-vignette"></div>
-<canvas id="particles-canvas"></canvas>
-
-<div class="cursor" id="cursor"></div>
-<div class="cursor-dot" id="cursorDot"></div>
-
-<main class="page">
-  <div class="card" id="card">
-    <div class="card-top-bar"></div>
-    <div class="avatar-wrap">
-      <div class="avatar-ring"></div>
-      <img class="avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23222'/%3E%3Ccircle cx='35' cy='40' r='5' fill='%23aaa'/%3E%3Ccircle cx='65' cy='40' r='5' fill='%23aaa'/%3E%3Cpath d='M30 65 Q50 80 70 65' stroke='%23aaa' fill='none' stroke-width='3'/%3E%3C/svg%3E" alt="pfp" />
-      <div class="status-dot"></div>
-    </div>
-    <div class="name-group">
-      <h1 class="name">Gabkoss<span class="verified-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2.5"/></svg></span></h1>
-      <p class="handle">yuxxgrahh</p>
-    </div>
-    <p class="bio" id="bioEl">&nbsp;</p>
-    <div class="badges"><span class="badge">night owl</span><span class="badge">music</span><span class="badge">dev</span><span class="badge">global</span></div>
-    <div class="divider"></div>
-    <div class="shop-wrap">
-      <a href="https://astrexalts.sellhub.cx/" target="_blank" rel="noopener" class="shop-btn">
-        <div class="shop-shine"></div>
-        <div class="shop-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-        <div class="shop-text"><span class="shop-label">AstrexShop</span><span class="shop-sublabel">Premium · Cheap · Trusted</span></div>
-        <svg class="shop-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <div class="shop-products"><span class="sp-pill">mc alts</span><span class="sp-pill">donutsmp money</span><span class="sp-pill">spawners</span><span class="sp-pill">elytras</span><span class="sp-pill">netflix</span><span class="sp-pill">spotify</span><span class="sp-pill">& more</span></div>
-    </div>
-    <div class="divider"></div>
-    <div class="socials">
-      <a href="https://www.google.com/maps/place/Debrecen,+Hungary" target="_blank" class="social-row location-row">
-        <div class="s-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
-        <div class="s-text"><span class="s-name">Debrecen, Hungary</span></div>
-        <svg class="s-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="https://discord.com/users/1403846293373194392" target="_blank" class="social-row discord">
-        <div class="s-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.012.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></div>
-        <div class="s-text"><span class="s-name">Discord</span><span class="s-sub">yuxxgrahh</span></div>
-        <svg class="s-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-    <div class="divider"></div>
-    <div class="views-block">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-      <span class="views-num" id="viewsNum">—</span>
-      <span class="views-lbl">profile views</span>
-    </div>
+  <!-- ── Splash / click-to-enter ─────────────────────────── -->
+  <div id="splash">
+    <div class="splash-line"></div>
+    <p class="splash-click">click to enter</p>
+    <p class="splash-text">gabkoss.lol</p>
+    <div class="splash-line"></div>
   </div>
-</main>
 
-<div class="player" id="player">
-  <audio id="audio" loop preload="auto"></audio>
-  <button class="play-btn" id="playBtn"><svg id="ico-play" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><svg id="ico-pause" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
-  <div class="eq-bars" id="eqBars"><i></i><i></i><i></i><i></i><i></i></div>
-  <span class="track-name">SHAKE DAT</span>
-</div>
+  <div class="bg-image"></div>
+  <div class="bg-vignette"></div>
+  <canvas id="particles-canvas"></canvas>
 
-<script>
-  // --------------------------------------------------------------
-  // 1. SPLASH + AUDIO (USER GESTURE)
-  // --------------------------------------------------------------
-  const splashDiv = document.getElementById('splash');
-  let splashDone = false;
-  function dismissSplash() {
-    if (splashDone) return;
-    splashDone = true;
-    splashDiv.classList.add('hidden');
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
-    const icoPlay = document.getElementById('ico-play');
-    const icoPause = document.getElementById('ico-pause');
-    const eqBars = document.getElementById('eqBars');
-    // we can't play remote audio without user gesture but we'll just init player state (no actual audio file)
-    // but we fake a little visualizer: later on click they can play but we show it's silent ready.
-    // To mimic original, we keep placeholder. No external audio to avoid network errors.
-    // we'll set a dummy empty source or just show ready.
-    audio.src = ''; // no real track, but we keep ui. The original track is removed for brevity.
-    window.playing = false;
-    icoPlay.style.display = '';
-    icoPause.style.display = 'none';
-    eqBars.classList.remove('active');
-  }
-  splashDiv.addEventListener('click', dismissSplash);
-  splashDiv.addEventListener('touchstart', dismissSplash);
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
 
-  // --------------------------------------------------------------
-  // 2. CUSTOM CURSOR
-  // --------------------------------------------------------------
-  const cursorRing = document.getElementById('cursor');
-  const cursorDot = document.getElementById('cursorDot');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorDot.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`; });
-  (function lerp() { rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22; cursorRing.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`; requestAnimationFrame(lerp); })();
-  document.querySelectorAll('a, button, .badge, .avatar-wrap, .shop-btn, .social-row').forEach(el => el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering')));
-  document.querySelectorAll('a, button, .badge, .avatar-wrap, .shop-btn, .social-row').forEach(el => el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering')));
+  <main class="page">
+    <div class="card" id="card">
 
-  // --------------------------------------------------------------
-  // 3. PARTICLES CANVAS (greyscale)
-  // --------------------------------------------------------------
-  const canvas = document.getElementById('particles-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H;
-  function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resizeCanvas(); window.addEventListener('resize', resizeCanvas);
-  const colors = ['rgba(255,255,255,A)', 'rgba(200,200,200,A)', 'rgba(160,160,160,A)', 'rgba(120,120,120,A)'];
-  class Dot {
-    constructor(scatter) { this.reset(scatter); }
-    reset(scatter) { this.x = Math.random() * W; this.y = scatter ? Math.random() * H : H + 6; this.r = Math.random() * 1.2 + 0.2; this.vx = (Math.random() - 0.5) * 0.25; this.vy = -(Math.random() * 0.45 + 0.12); const a = (Math.random() * 0.2 + 0.03).toFixed(2); this.color = colors[Math.floor(Math.random() * colors.length)].replace('A', a); this.life = 0; this.max = Math.random() * 280 + 140; }
-    tick() { this.x += this.vx; this.y += this.vy; this.life++; if (this.y < -6 || this.life > this.max) this.reset(false); }
-    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
-  }
-  const dots = Array.from({ length: 38 }, () => new Dot(true));
-  let frame = 0;
-  function drawLines() { frame++; if (frame % 2 !== 0) return; const MAX = 75; for (let i = 0; i < dots.length; i++) for (let j = i + 1; j < dots.length; j++) { const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y, d = Math.hypot(dx, dy); if (d < MAX) { ctx.beginPath(); ctx.moveTo(dots[i].x, dots[i].y); ctx.lineTo(dots[j].x, dots[j].y); ctx.strokeStyle = `rgba(255,255,255,${(1 - d / MAX) * 0.04})`; ctx.lineWidth = 0.4; ctx.stroke(); } } }
-  function animateParticles() { ctx.clearRect(0, 0, W, H); drawLines(); dots.forEach(d => { d.tick(); d.draw(); }); requestAnimationFrame(animateParticles); }
-  animateParticles();
+      <div class="card-top-bar"></div>
 
-  // card tilt
-  const card = document.getElementById('card');
-  let tiltPending = false, lastX = 0, lastY = 0;
-  document.addEventListener('mousemove', e => { lastX = e.clientX; lastY = e.clientY; if (!tiltPending) { tiltPending = true; requestAnimationFrame(() => { const rect = card.getBoundingClientRect(); const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2; const nx = (lastX - cx) / (rect.width / 2), ny = (lastY - cy) / (rect.height / 2); card.style.transform = `perspective(1000px) rotateX(${-ny * 4}deg) rotateY(${nx * 4}deg)`; tiltPending = false; }); } });
-  document.addEventListener('mouseleave', () => { card.style.transform = ''; });
-  card.style.transition = 'transform 0.2s ease';
+      <!-- Avatar -->
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <img class="avatar-img" src="pfp.png" alt="pfp" />
+        <div class="status-dot"></div>
+      </div>
 
-  // typing bio
-  const bioEl = document.getElementById('bioEl');
-  const bioStr = 'Just a person doing things on the webssss.';
-  let idx = 0;
-  function typeBio() { if (idx < bioStr.length) { bioEl.textContent += bioStr[idx++]; setTimeout(typeBio, 24 + Math.random() * 16); } }
-  setTimeout(typeBio, 1200);
+      <!-- Name -->
+      <div class="name-group">
+        <h1 class="name">Gabkoss
+          <span class="verified-badge" title="Verified">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </h1>
+        <p class="handle">yuxxgrahh</p>
+      </div>
 
-  // --------------------------------------------------------------
-  // 4. PROFILE VIEWS — REAL IP‑BASED (using ipapi.co or fallback)
-  //    Stored in backend via localStorage + cookie + ip signature
-  //    Actually unique per IP address using fetch to ipapi.co
-  // --------------------------------------------------------------
-  const viewsSpan = document.getElementById('viewsNum');
-  async function initIpBasedViews() {
-    const STORAGE_KEY = 'gabkoss_view_records';
-    let stored = localStorage.getItem(STORAGE_KEY);
-    let viewMap = stored ? JSON.parse(stored) : { total: 0, ips: [] };
-    let currentTotal = viewMap.total || 0;
+      <!-- Bio -->
+      <p class="bio" id="bioEl">&nbsp;</p>
 
-    // Fetch client IP
-    let clientIp = null;
-    try {
-      const res = await fetch('https://api.ipify.org?format=json');
-      const data = await res.json();
-      clientIp = data.ip;
-    } catch(e) { console.warn('ipify failed', e); try { const res2 = await fetch('https://api.ipapi.co/json/'); const data2 = await res2.json(); clientIp = data2.ip; } catch(e2) { clientIp = 'unknown-' + Date.now(); } }
-    
-    // Check if IP already counted
-    const alreadyCounted = viewMap.ips && viewMap.ips.includes(clientIp);
-    if (!alreadyCounted && clientIp) {
-      currentTotal++;
-      viewMap.total = currentTotal;
-      viewMap.ips = viewMap.ips || [];
-      viewMap.ips.push(clientIp);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(viewMap));
-    }
-    // Animate count up
-    const target = currentTotal;
-    const duration = 1200;
-    const startTime = performance.now();
-    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-    function step(now) {
-      let t = Math.min((now - startTime) / duration, 1);
-      let val = Math.floor(easeOut(t) * target);
-      viewsSpan.textContent = val.toLocaleString();
-      if (t < 1) requestAnimationFrame(step);
-      else viewsSpan.textContent = target.toLocaleString();
-    }
-    requestAnimationFrame(step);
-  }
-  initIpBasedViews();
+      <!-- Badges -->
+      <div class="badges">
+        <span class="badge">night owl</span>
+        <span class="badge">music</span>
+        <span class="badge">dev</span>
+        <span class="badge">global</span>
+      </div>
 
-  // social ripple effect
-  document.querySelectorAll('.social-row').forEach(row => {
-    row.addEventListener('click', function(e) {
-      const ripple = document.createElement('span');
-      const rect = this.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height) * 1.8;
-      ripple.style.cssText = `position:absolute; left:${e.clientX - rect.left - size/2}px; top:${e.clientY - rect.top - size/2}px; width:${size}px; height:${size}px; border-radius:50%; background:rgba(255,255,255,0.05); transform:scale(0); animation:ripple 0.45s ease-out forwards; pointer-events:none;`;
-      this.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 500);
-    });
-  });
-  const styleRipple = document.createElement('style');
-  styleRipple.textContent = '@keyframes ripple { to { transform:scale(1); opacity:0; } }';
-  document.head.appendChild(styleRipple);
+      <div class="divider"></div>
 
-  // music dummy (keep UI interactive but no actual file)
-  const audioEl = document.getElementById('audio');
-  const playBtn = document.getElementById('playBtn');
-  const icoPlay = document.getElementById('ico-play');
-  const icoPause = document.getElementById('ico-pause');
-  const eqBars = document.getElementById('eqBars');
-  let playing = false;
-  function setPlay(state) {
-    playing = state;
-    if (state) {
-      // because no real audio src, we just simulate visualizer
-      icoPlay.style.display = 'none';
-      icoPause.style.display = '';
-      eqBars.classList.add('active');
-      if (audioEl.src) audioEl.play().catch(()=>{});
-    } else {
-      icoPlay.style.display = '';
-      icoPause.style.display = 'none';
-      eqBars.classList.remove('active');
-      if (audioEl.src) audioEl.pause();
-    }
-  }
-  playBtn.addEventListener('click', () => setPlay(!playing));
-</script>
+      <!-- ── Shop CTA ──────────────────────────────────────── -->
+      <div class="shop-wrap">
+        <a href="https://astrexalts.sellhub.cx/" target="_blank" rel="noopener" class="shop-btn">
+          <div class="shop-shine"></div>
+          <div class="shop-icon">
+            <!-- shopping bag icon -->
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+          </div>
+          <div class="shop-text">
+            <span class="shop-label">AstrexShop</span>
+            <span class="shop-sublabel">Premium · Cheap · Trusted</span>
+          </div>
+          <svg class="shop-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <!-- Product pills -->
+        <div class="shop-products">
+          <span class="sp-pill">
+            <!-- creeper icon -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="3"/><rect x="8" y="8" width="3" height="3" fill="#080808"/><rect x="13" y="8" width="3" height="3" fill="#080808"/><rect x="9" y="13" width="6" height="2" fill="#080808"/><rect x="9" y="15" width="2" height="2" fill="#080808"/><rect x="13" y="15" width="2" height="2" fill="#080808"/></svg>
+            mc alts
+          </span>
+          <span class="sp-pill">
+            <!-- donut -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+            donutsmp money
+          </span>
+          <span class="sp-pill">
+            <!-- diamond/spawner -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 19 9 12 22 5 9"/></svg>
+            spawners
+          </span>
+          <span class="sp-pill">
+            <!-- wings/elytra -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 12C8 6 2 5 2 10c0 4 4 5 6 4"/><path d="M12 12c4-6 10-7 10-2 0 4-4 5-6 4"/></svg>
+            elytras
+          </span>
+          <span class="sp-pill">
+            <!-- N for Netflix -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3v18l6-9 2 6 5-6v9h1V3h-1L12 12 7 3z"/></svg>
+            netflix
+          </span>
+          <span class="sp-pill">
+            <!-- music note for Spotify -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 11.5c2.5-1 5.5-.8 8 .5M8 14c2.5-1 5.5-.8 8 .5M8 16.5c2.5-1 5.5-.8 8 .5"/></svg>
+            spotify
+          </span>
+          <span class="sp-pill">
+            <!-- plus sign for more -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            & more
+          </span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Socials -->
+      <div class="socials">
+
+        <!-- Location row (no year) -->
+        <a href="https://www.google.com/maps/place/Debrecen,+Hungary" target="_blank" rel="noopener" class="social-row location-row">
+          <div class="s-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <div class="s-text">
+            <span class="s-name">Debrecen, Hungary</span>
+          </div>
+          <svg class="s-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <!-- Discord row -->
+        <a href="https://discord.com/users/1403846293373194392" target="_blank" rel="noopener" class="social-row discord">
+          <div class="s-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.012.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+            </svg>
+          </div>
+          <div class="s-text">
+            <span class="s-name">Discord</span>
+            <span class="s-sub">yuxxgrahh</span>
+          </div>
+          <svg class="s-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Views -->
+      <div class="views-block">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="views-num" id="viewsNum">—</span>
+        <span class="views-lbl">profile views</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Music pill -->
+  <div class="player" id="player">
+    <audio id="audio" src="vini-x-belano-shake-dat-official-music-video-vini-128k_8qoJqSo7.mp3" loop preload="auto"></audio>
+    <button class="play-btn" id="playBtn" aria-label="Play music">
+      <svg id="ico-play"  width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="ico-pause" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="eq-bars" id="eqBars">
+      <i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <span class="track-name">SHAKE DAT</span>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
