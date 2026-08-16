@@ -86,13 +86,12 @@ img { max-width: 100%; display: block; }
 .logo span { color: var(--orange); }
 
 .logo-sub {
-  font-size: 0.6rem;
+  font-size: 0.56rem;
   font-weight: 500;
   color: var(--gray-500);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-top: -2px;
-  opacity: 0.75;
+  margin-top: -1px;
 }
 
 .nav-links {
@@ -293,6 +292,8 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
+  max-width: 720px;
+  margin: 0 auto;
 }
 .card {
   background: var(--gray-900);
@@ -307,9 +308,15 @@ section {
   box-shadow: 0 14px 30px rgba(0,0,0,0.4);
 }
 .card-icon {
-  font-size: 1.8rem;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
   margin-bottom: 16px;
 }
+.card-icon svg { width: 100%; height: 100%; }
 .card h3 { font-size: 1.15rem; margin-bottom: 10px; }
 .card p { color: var(--gray-300); font-size: 0.92rem; margin-bottom: 18px; }
 .card-link { color: var(--orange); font-weight: 600; font-size: 0.9rem; }
@@ -341,11 +348,11 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 1.1rem;
   color: var(--black);
   margin-bottom: 16px;
+  padding: 9px;
 }
+.product-icon svg { width: 100%; height: 100%; }
 .product-icon.netflix { background: linear-gradient(135deg, #ff7a1a, #e5342e); }
 .product-icon.youtube { background: linear-gradient(135deg, #ffa04d, #ff5a1a); }
 .product-icon.discord { background: linear-gradient(135deg, #ff9a4d, #cc5f0f); }
@@ -361,6 +368,33 @@ section {
 }
 .price { color: var(--orange-light); font-weight: 700; font-size: 0.9rem; }
 .shop-more { text-align: center; margin-top: 36px; }
+
+/* FEE TIERS */
+.fee-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 640px;
+  margin: 0 auto 40px;
+}
+.fee-tier {
+  background: var(--gray-900);
+  border: 1px solid var(--gray-800);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+}
+.fee-percent {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.fee-label {
+  color: var(--gray-300);
+  font-size: 0.9rem;
+}
 
 /* STEPS */
 .steps {
@@ -410,7 +444,15 @@ section {
   font-size: 0.95rem;
 }
 .rates-table tbody tr:hover { background: var(--gray-900); }
-.route-icon { color: var(--orange); margin-right: 8px; }
+.route-icon {
+  color: var(--orange);
+  margin-right: 8px;
+  display: inline-flex;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+}
+.route-icon svg { width: 100%; height: 100%; }
 .rate-val { color: var(--orange-light); font-weight: 700; }
 .rates-note {
   text-align: center;
