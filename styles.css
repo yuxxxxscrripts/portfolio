@@ -71,6 +71,12 @@ img { max-width: 100%; display: block; }
   gap: 20px;
 }
 
+.logo-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
 .logo {
   font-size: 1.4rem;
   font-weight: 800;
@@ -78,6 +84,15 @@ img { max-width: 100%; display: block; }
   letter-spacing: -0.5px;
 }
 .logo span { color: var(--orange); }
+
+.logo-sub {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
 
 .nav-links {
   display: flex;
@@ -445,7 +460,7 @@ section {
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
 }
-.footer-brand p { color: var(--gray-500); margin-top: 12px; font-size: 0.9rem; max-width: 260px; }
+.footer-brand p { color: var(--gray-500); margin-top: 14px; font-size: 0.9rem; max-width: 260px; }
 .footer-col h4 { margin-bottom: 16px; font-size: 0.9rem; color: var(--gray-300); text-transform: uppercase; letter-spacing: 1px; }
 .footer-col a { display: block; color: var(--gray-500); margin-bottom: 10px; font-size: 0.9rem; transition: color var(--transition); }
 .footer-col a:hover { color: var(--orange); }
