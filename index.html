@@ -1,63 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YuxMarket | Digital Shop & Crypto/PayPal Exchange</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YuxMarket | Digital Shop & Crypto/PayPal Exchange</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<div class="bg-glow"></div>
+  <div class="bg-glow"></div>
 
-<header class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo-block">
-      <span class="logo">Yux<span>Market</span></span>
-      <span class="logo-sub">YuxXChange</span>
-    </a>
-    <nav class="nav-links">
+  <!-- ─── HEADER ─── -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo-block">
+        <span class="logo">Yux<span>Market</span></span>
+        <span class="logo-sub">YuxXChange</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#shop">Shop</a>
+        <a href="#exchange">Exchange</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <button class="burger" id="burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
       <a href="#home">Home</a>
-      <a href="shop.html">Shop</a>
-      <a href="exchange.html">Exchange</a>
+      <a href="#shop">Shop</a>
+      <a href="#exchange">Exchange</a>
       <a href="#reviews">Reviews</a>
       <a href="#faq">FAQ</a>
-    </nav>
-    <div class="nav-buttons">
-      <a href="#" class="btn btn-outline">Login</a>
-      <a href="#" class="btn btn-solid">Start Order</a>
     </div>
-    <button class="burger" id="burger" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#home">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="exchange.html">Exchange</a>
-    <a href="#reviews">Reviews</a>
-    <a href="#faq">FAQ</a>
-    <a href="#" class="btn btn-outline">Login</a>
-    <a href="#" class="btn btn-solid">Start Order</a>
-  </div>
-</header>
+  </header>
 
-<main>
+  <!-- ─── MAIN ─── -->
+  <main>
 
-  <section class="hero" id="home">
-    <div class="hero-content">
+    <!-- HERO -->
+    <section class="hero" id="home">
       <span class="badge">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/>
+        </svg>
         Instant Automated Delivery
       </span>
-      <h1>Digital Items <span class="highlight">&</span> Exchange.<br>Fast, Safe, Automated.</h1>
-      <p class="hero-sub">YuxMarket is your one-stop shop for Netflix, YouTube Premium, Discord Nitro and more —
+      <h1>Digital Items <span class="highlight">&amp;</span> Exchange.<br>Fast, Safe, Automated.</h1>
+      <p class="hero-sub">
+        YuxMarket is your one-stop shop for Netflix, YouTube Premium, Discord Nitro and more —
         plus instant crypto
-        <svg class="inline-arrows" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h13M4 9l4-4M4 9l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 15H7M20 15l-4-4M20 15l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        PayPal exchanges, all automated and hassle-free.</p>
+        <svg class="inline-arrows" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 9h13M4 9l4-4M4 9l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 15H7M20 15l-4-4M20 15l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        PayPal exchanges, all automated and hassle-free.
+      </p>
       <div class="hero-actions">
-        <a href="shop.html" class="btn btn-solid btn-lg">Browse Shop</a>
-        <a href="exchange.html" class="btn btn-outline btn-lg">Exchange Now</a>
+        <a href="#shop" class="btn btn-solid btn-lg">Browse Shop</a>
+        <a href="#exchange" class="btn btn-outline btn-lg">Exchange Now</a>
       </div>
       <div class="hero-stats">
         <div class="stat">
@@ -73,189 +76,202 @@
           <p>Avg. Delivery Time</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="marquee">
-    <div class="marquee-track">
-      <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
-      <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
-      <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
-      <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
-      <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
-      <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
-      <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
-      <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
-    </div>
-  </section>
+    <!-- MARQUEE -->
+    <section class="marquee" style="padding:18px 0;">
+      <div class="marquee-track">
+        <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
+        <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
+        <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
+        <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
+        <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
+        <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
+        <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
+        <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
+      </div>
+    </section>
 
-  <section class="teaser-grid">
-    <div class="teaser-card">
-      <div class="teaser-icon">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16l-1.4 11.2a2 2 0 01-2 1.8H7.4a2 2 0 01-2-1.8L4 7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 7V5.5a4 4 0 018 0V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      </div>
-      <h3>Shop</h3>
-      <p>We sell digital items — Netflix, YouTube Premium, Discord Nitro, Spotify and more, delivered instantly.</p>
-      <a href="shop.html" class="btn btn-solid">Go to Shop</a>
-    </div>
-    <div class="teaser-card">
-      <div class="teaser-icon">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h13M4 9l4-4M4 9l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 15H7M20 15l-4-4M20 15l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <h3>Exchange</h3>
-      <p>We exchange crypto to PayPal and PayPal to crypto, instantly and automatically.</p>
-      <a href="exchange.html" class="btn btn-solid">Go to Exchange</a>
-    </div>
-  </section>
-
-  <section class="how" id="how">
-    <div class="section-head">
-      <span class="tag">Process</span>
-      <h2>How it works</h2>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>Choose an order</h3>
-        <p>Pick a product to buy or a route to exchange.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>Get a quote</h3>
-        <p>Our system calculates your total instantly, no waiting.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>Send payment</h3>
-        <p>Follow the on-screen instructions to complete your order.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <h3>Receive instantly</h3>
-        <p>Your order is delivered automatically within minutes.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="reviews" id="reviews">
-    <div class="section-head">
-      <span class="tag">Testimonials</span>
-      <h2>What our customers say</h2>
-    </div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+    <!-- TEASER : SHOP & EXCHANGE -->
+    <section class="teaser-grid" id="shop" style="padding-top:60px;">
+      <div class="teaser-card">
+        <div class="teaser-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 7h16l-1.4 11.2a2 2 0 01-2 1.8H7.4a2 2 0 01-2-1.8L4 7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M8 7V5.5a4 4 0 018 0V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
         </div>
-        <p>"Sent BTC and had PayPal funds in under 3 minutes. Insanely fast."</p>
-        <span class="reviewer">— Nick R.</span>
+        <h3>Shop</h3>
+        <p>We sell digital items — Netflix, YouTube Premium, Discord Nitro, Spotify and more, delivered instantly.</p>
+        <a href="#shop" class="btn btn-solid">Go to Shop</a>
       </div>
-      <div class="review-card">
-        <div class="stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+      <div class="teaser-card" id="exchange">
+        <div class="teaser-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 9h13M4 9l4-4M4 9l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 15H7M20 15l-4-4M20 15l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <p>"Been using this for months, rates are always fair and support is quick."</p>
-        <span class="reviewer">— Jordan K.</span>
+        <h3>Exchange</h3>
+        <p>We exchange crypto to PayPal and PayPal to crypto, instantly and automatically.</p>
+        <a href="#exchange" class="btn btn-solid">Go to Exchange</a>
       </div>
-      <div class="review-card">
-        <div class="stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how" id="how">
+      <div class="section-head">
+        <span class="tag">Process</span>
+        <h2>How it works</h2>
+        <p>Four simple steps to get your order or exchange completed.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Choose an order</h3>
+          <p>Pick a product to buy or a route to exchange.</p>
         </div>
-        <p>"Cleanest site I've used. No sketchy vibes, just works."</p>
-        <span class="reviewer">— Amara T.</span>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Get a quote</h3>
+          <p>Our system calculates your total instantly, no waiting.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>Send payment</h3>
+          <p>Follow the on-screen instructions to complete your order.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h3>Receive instantly</h3>
+          <p>Your order is delivered automatically within minutes.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="faq" id="faq">
-    <div class="section-head">
-      <span class="tag">FAQ</span>
-      <h2>Frequently asked questions</h2>
-    </div>
-    <div class="faq-list" id="faqList">
-      <div class="faq-item">
-        <button class="faq-q">Is this exchange automated? <span>+</span></button>
-        <div class="faq-a"><p>Yes, most orders are processed instantly by our automated system, 24/7.</p></div>
+    <!-- REVIEWS -->
+    <section class="reviews" id="reviews">
+      <div class="section-head">
+        <span class="tag">Testimonials</span>
+        <h2>What our customers say</h2>
       </div>
-      <div class="faq-item">
-        <button class="faq-q">What's the minimum and maximum order? <span>+</span></button>
-        <div class="faq-a"><p>Minimums start around $10-20 depending on the route, with maximums up to $5,000. Larger orders may need manual review.</p></div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+          </div>
+          <p>"Sent BTC and had PayPal funds in under 3 minutes. Insanely fast."</p>
+          <span class="reviewer">— Nick R.</span>
+        </div>
+        <div class="review-card">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+          </div>
+          <p>"Been using this for months, rates are always fair and support is quick."</p>
+          <span class="reviewer">— Jordan K.</span>
+        </div>
+        <div class="review-card">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 17l-6.2 3.4 1.6-6.8-5.2-4.6 6.9-.7L12 2z"/></svg>
+          </div>
+          <p>"Cleanest site I've used. No sketchy vibes, just works."</p>
+          <span class="reviewer">— Amara T.</span>
+        </div>
       </div>
-      <div class="faq-item">
-        <button class="faq-q">How long do exchanges take? <span>+</span></button>
-        <div class="faq-a"><p>Most exchanges complete in under 5 minutes after confirmations. Manual review orders may take longer.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Is it safe to use? <span>+</span></button>
-        <div class="faq-a"><p>We use secure automated processing and never store more information than necessary to complete your order.</p></div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="cta">
-    <div class="cta-box">
-      <h2>Ready to get started?</h2>
-      <p>Buy digital items or make an exchange in seconds — no account required for most orders.</p>
-      <div class="hero-actions">
-        <a href="shop.html" class="btn btn-solid btn-lg">Go to Shop</a>
-        <a href="exchange.html" class="btn btn-outline btn-lg">Go to Exchange</a>
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="section-head">
+        <span class="tag">FAQ</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item">
+          <button class="faq-q">Is this exchange automated? <span>+</span></button>
+          <div class="faq-a"><p>Yes, most orders are processed instantly by our automated system, 24/7.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What's the minimum and maximum order? <span>+</span></button>
+          <div class="faq-a"><p>Minimums start around $10-20 depending on the route, with maximums up to $5,000. Larger orders may need manual review.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How long do exchanges take? <span>+</span></button>
+          <div class="faq-a"><p>Most exchanges complete in under 5 minutes after confirmations. Manual review orders may take longer.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is it safe to use? <span>+</span></button>
+          <div class="faq-a"><p>We use secure automated processing and never store more information than necessary to complete your order.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="cta-box">
+        <h2>Ready to get started?</h2>
+        <p>Buy digital items or make an exchange in seconds — no account required for most orders.</p>
+        <div class="hero-actions">
+          <a href="#shop" class="btn btn-solid btn-lg">Go to Shop</a>
+          <a href="#exchange" class="btn btn-outline btn-lg">Go to Exchange</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-block">
+          <span class="logo">Yux<span>Market</span></span>
+          <span class="logo-sub">YuxXChange</span>
+        </a>
+        <p>We sell digital items and exchange crypto &amp; PayPal, instantly.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="#shop">Netflix Accounts</a>
+        <a href="#shop">YouTube Premium</a>
+        <a href="#shop">Discord Nitro</a>
+        <a href="#shop">Spotify Premium</a>
+      </div>
+      <div class="footer-col">
+        <h4>Exchange</h4>
+        <a href="#exchange">Crypto → PayPal</a>
+        <a href="#exchange">PayPal → Crypto</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#faq">FAQ</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Live Chat</a>
+        <a href="#">Discord</a>
+        <a href="#">Contact</a>
       </div>
     </div>
-  </section>
+    <div class="footer-bottom">
+      <p>&copy; 2026 YuxMarket. All rights reserved.</p>
+    </div>
+  </footer>
 
-</main>
-
-<footer class="footer">
-  <div class="footer-top">
-    <div class="footer-brand">
-      <a href="index.html" class="logo-block">
-        <span class="logo">Yux<span>Market</span></span>
-        <span class="logo-sub">YuxXChange</span>
-      </a>
-      <p>We sell digital items and exchange crypto & PayPal, instantly.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <a href="shop.html">Netflix Accounts</a>
-      <a href="shop.html">YouTube Premium</a>
-      <a href="shop.html">Discord Nitro</a>
-      <a href="shop.html">Spotify Premium</a>
-    </div>
-    <div class="footer-col">
-      <h4>Exchange</h4>
-      <a href="exchange.html">Crypto → PayPal</a>
-      <a href="exchange.html">PayPal → Crypto</a>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="#faq">FAQ</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#">Terms of Service</a>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <a href="#">Live Chat</a>
-      <a href="#">Discord</a>
-      <a href="#">Contact</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2026 YuxMarket. All rights reserved.</p>
-  </div>
-</footer>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
