@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoltXchange | Crypto & PayPal Exchange</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">Volt<span>Xchange</span></a>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#rates">Rates</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-buttons">
+      <a href="#" class="btn btn-outline">Login</a>
+      <a href="#" class="btn btn-solid">Start Order</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#rates">Rates</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#" class="btn btn-outline">Login</a>
+    <a href="#" class="btn btn-solid">Start Order</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <span class="badge">⚡ Instant Automated Exchanges</span>
+      <h1>Crypto <span class="highlight">⇄</span> PayPal.<br>Fast, Safe, Automated.</h1>
+      <p class="hero-sub">VoltXchange lets you swap crypto to PayPal, PayPal to crypto, and more —
+        instantly, securely, and without the hassle of sketchy middlemen.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn btn-solid btn-lg">Get Started</a>
+        <a href="#rates" class="btn btn-outline btn-lg">View Rates</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <h3>24/7</h3>
+          <p>Automated System</p>
+        </div>
+        <div class="stat">
+          <h3>10k+</h3>
+          <p>Orders Completed</p>
+        </div>
+        <div class="stat">
+          <h3>&lt;5min</h3>
+          <p>Avg. Delivery Time</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee">
+    <div class="marquee-track">
+      <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
+      <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
+      <span>BTC</span><span>•</span><span>ETH</span><span>•</span><span>LTC</span><span>•</span>
+      <span>USDT</span><span>•</span><span>PAYPAL</span><span>•</span><span>SOL</span><span>•</span>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="section-head">
+      <span class="tag">Services</span>
+      <h2>What we exchange</h2>
+      <p>Pick a route below and get an instant automated quote.</p>
+    </div>
+    <div class="services-grid">
+      <div class="card">
+        <div class="card-icon">₿ → 🅿️</div>
+        <h3>Crypto → PayPal</h3>
+        <p>Send BTC, ETH, LTC or USDT and receive funds straight to your PayPal balance.</p>
+        <a href="#" class="card-link">Exchange now →</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">🅿️ → ₿</div>
+        <h3>PayPal → Crypto</h3>
+        <p>Send PayPal funds and get crypto delivered directly to your wallet.</p>
+        <a href="#" class="card-link">Exchange now →</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">🅿️ → 🅿️</div>
+        <h3>PayPal → PayPal</h3>
+        <p>Instant PayPal transfers, F&F and Goods & Services options available.</p>
+        <a href="#" class="card-link">Exchange now →</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">₿ → ₿</div>
+        <h3>Crypto → Crypto</h3>
+        <p>Swap between BTC, ETH, LTC, SOL and USDT at competitive rates.</p>
+        <a href="#" class="card-link">Exchange now →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="section-head">
+      <span class="tag">Process</span>
+      <h2>How it works</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Choose your route</h3>
+        <p>Select what you're sending and what you want to receive.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Get a quote</h3>
+        <p>Our system calculates a live rate instantly, no waiting.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Send payment</h3>
+        <p>Follow the on-screen instructions to send your funds.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Receive instantly</h3>
+        <p>Funds are delivered automatically within minutes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="rates" id="rates">
+    <div class="section-head">
+      <span class="tag">Live Rates</span>
+      <h2>Current exchange rates</h2>
+      <p>Rates update automatically based on market pricing.</p>
+    </div>
+    <div class="rates-table-wrap">
+      <table class="rates-table" id="ratesTable">
+        <thead>
+          <tr>
+            <th>Route</th>
+            <th>Rate</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="route-icon">₿</span> BTC → PayPal</td>
+            <td class="rate-val" data-base="0.90">90%</td>
+            <td>$20</td>
+            <td>$5,000</td>
+            <td><a href="#" class="btn btn-mini">Exchange</a></td>
+          </tr>
+          <tr>
+            <td><span class="route-icon">🅿️</span> PayPal → BTC</td>
+            <td class="rate-val" data-base="0.87">87%</td>
+            <td>$20</td>
+            <td>$5,000</td>
+            <td><a href="#" class="btn btn-mini">Exchange</a></td>
+          </tr>
+          <tr>
+            <td><span class="route-icon">Ξ</span> ETH → PayPal</td>
+            <td class="rate-val" data-base="0.89">89%</td>
+            <td>$20</td>
+            <td>$5,000</td>
+            <td><a href="#" class="btn btn-mini">Exchange</a></td>
+          </tr>
+          <tr>
+            <td><span class="route-icon">🅿️</span> PayPal → PayPal</td>
+            <td class="rate-val" data-base="0.95">95%</td>
+            <td>$10</td>
+            <td>$2,000</td>
+            <td><a href="#" class="btn btn-mini">Exchange</a></td>
+          </tr>
+          <tr>
+            <td><span class="route-icon">Ł</span> LTC → PayPal</td>
+            <td class="rate-val" data-base="0.88">88%</td>
+            <td>$20</td>
+            <td>$5,000</td>
+            <td><a href="#" class="btn btn-mini">Exchange</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="rates-note" id="ratesNote">Rates refresh automatically • Last updated just now</p>
+  </section>
+
+  <section class="reviews" id="reviews">
+    <div class="section-head">
+      <span class="tag">Testimonials</span>
+      <h2>What our customers say</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Sent BTC and had PayPal funds in under 3 minutes. Insanely fast."</p>
+        <span class="reviewer">— Nick R.</span>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Been using this for months, rates are always fair and support is quick."</p>
+        <span class="reviewer">— Jordan K.</span>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Cleanest exchange site I've used. No sketchy vibes, just works."</p>
+        <span class="reviewer">— Amara T.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="section-head">
+      <span class="tag">FAQ</span>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">Is this exchange automated? <span>+</span></button>
+        <div class="faq-a"><p>Yes, most orders are processed instantly by our automated system, 24/7.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's the minimum and maximum order? <span>+</span></button>
+        <div class="faq-a"><p>Minimums start around $10-20 depending on the route, with maximums up to $5,000. Larger orders may need manual review.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How long do exchanges take? <span>+</span></button>
+        <div class="faq-a"><p>Most exchanges complete in under 5 minutes after confirmations. Manual review orders may take longer.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is it safe to use? <span>+</span></button>
+        <div class="faq-a"><p>We use secure automated processing and never store more information than necessary to complete your order.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-box">
+      <h2>Ready to make an exchange?</h2>
+      <p>Get started in seconds — no account required for most orders.</p>
+      <a href="#services" class="btn btn-solid btn-lg">Start an Exchange</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">Volt<span>Xchange</span></a>
+      <p>Automated crypto & PayPal exchange platform.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#services">Crypto → PayPal</a>
+      <a href="#services">PayPal → Crypto</a>
+      <a href="#services">PayPal → PayPal</a>
+      <a href="#services">Crypto → Crypto</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#faq">FAQ</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#rates">Rates</a>
+      <a href="#">Terms of Service</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Live Chat</a>
+      <a href="#">Discord</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 VoltXchange. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
