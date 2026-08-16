@@ -18,13 +18,27 @@
   }
 
   // ── FAQ accordion ──
-  document.querySelectorAll('.faq-item').forEach(item => {
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
     const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    if (!q || !a) return;
+
     q.addEventListener('click', () => {
       const isOpen = item.classList.contains('open');
-      // close others
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
+
+      // close all items and reset their heights
+      faqItems.forEach(i => {
+        i.classList.remove('open');
+        const answer = i.querySelector('.faq-a');
+        if (answer) answer.style.maxHeight = '';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        // use the answer's actual height so long answers never get clipped
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
     });
   });
 
