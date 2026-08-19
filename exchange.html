@@ -6,7 +6,6 @@
   <title>YuxMarket · Exchange</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* exchange-specific tweaks */
     .exchange-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -55,7 +54,8 @@
       margin-bottom: 5px;
       letter-spacing: 0.3px;
     }
-    .form-group input, .form-group select {
+    .form-group input,
+    .form-group select {
       width: 100%;
       padding: 12px 14px;
       background: var(--black-soft);
@@ -66,7 +66,8 @@
       transition: border var(--transition), box-shadow var(--transition);
       outline: none;
     }
-    .form-group input:focus, .form-group select:focus {
+    .form-group input:focus,
+    .form-group select:focus {
       border-color: var(--orange);
       box-shadow: 0 0 0 3px rgba(255, 122, 26, 0.15);
     }
@@ -130,20 +131,6 @@
       filter: brightness(1.08);
       box-shadow: 0 12px 28px rgba(255, 122, 26, 0.25);
     }
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 10px 0 20px;
-      color: var(--gray-500);
-      font-size: 0.8rem;
-    }
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--gray-800);
-    }
     .address-block {
       background: var(--black-soft);
       padding: 14px 16px;
@@ -157,6 +144,34 @@
       text-transform: uppercase;
       letter-spacing: 0.8px;
       margin-bottom: 6px;
+    }
+    .estimate-box {
+      background: var(--black-soft);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-top: 4px;
+      margin-bottom: 14px;
+      border: 1px solid var(--gray-800);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .estimate-box .label {
+      color: var(--gray-500);
+    }
+    .estimate-box .value {
+      font-weight: 700;
+      color: var(--orange);
+      font-size: 1.05rem;
+    }
+    .estimate-box .fee-badge {
+      background: var(--gray-800);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      color: var(--gray-300);
     }
     @media (max-width: 800px) {
       .exchange-grid {
@@ -175,7 +190,7 @@
       color: var(--white);
       font-weight: 500;
       backdrop-filter: blur(8px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
       opacity: 0;
       transition: all 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
       z-index: 999;
@@ -188,357 +203,419 @@
   </style>
 </head>
 <body>
-<div class="bg-glow"></div>
+  <div class="bg-glow"></div>
 
-<header class="navbar" id="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo-block">
-      <span class="logo">Yux<span>Market</span></span>
-      <span class="logo-sub">YuxXChange</span>
-    </a>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="index.html#shop">Shop</a>
-      <a href="exchange.html" class="active-link" style="color:var(--orange);">Exchange</a>
-      <a href="index.html#reviews">Reviews</a>
-      <a href="index.html#faq">FAQ</a>
-    </nav>
-    <button class="burger" id="burger" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html">Home</a>
-    <a href="index.html#shop">Shop</a>
-    <a href="exchange.html">Exchange</a>
-    <a href="index.html#reviews">Reviews</a>
-    <a href="index.html#faq">FAQ</a>
-  </div>
-</header>
-
-<main>
-  <section style="padding-top: 20px;">
-    <div class="section-head" style="margin-bottom: 20px;">
-      <span class="tag">Exchange</span>
-      <h2>Crypto ↔ PayPal <span style="color:var(--orange);">fast & reliable</span></h2>
-      <p>Choose your direction, fill in the details, and our team will process your order within ~15 min.</p>
-    </div>
-
-    <div class="exchange-grid">
-      <!-- PayPal → Crypto -->
-      <div class="exchange-card">
-        <h3>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 9h13M4 9l4-4M4 9l4 4" />
-            <path d="M20 15H7M20 15l-4-4M20 15l-4 4" />
-          </svg>
-          PayPal → Crypto
-        </h3>
-        <div class="sub">Send PayPal & receive crypto</div>
-
-        <form id="paypalToCrypto">
-          <div class="form-group">
-            <label>Your PayPal email *</label>
-            <input type="email" name="paypal_email" placeholder="you@example.com" required />
-          </div>
-          <div class="form-group">
-            <label>Amount (USD) *</label>
-            <input type="number" name="amount_usd" placeholder="50.00" step="0.01" min="1" required />
-          </div>
-          <div class="form-group">
-            <label>Choose crypto you want to receive *</label>
-            <select name="crypto_target" required>
-              <option value="">— select —</option>
-              <option value="BTC">Bitcoin (BTC)</option>
-              <option value="ETH">Ethereum (ETH)</option>
-              <option value="LTC">Litecoin (LTC)</option>
-              <option value="SOL">Solana (SOL)</option>
-              <option value="USDT">Tether (USDT)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Your crypto address *</label>
-            <input type="text" name="crypto_address" placeholder="0x... or bc1..." required />
-          </div>
-          <div class="form-group">
-            <label>Your Discord username (for confirmation) *</label>
-            <input type="text" name="discord_user" placeholder="user#1234" required />
-          </div>
-
-          <div class="address-block">
-            <div class="address-label">📤 send PayPal payment to</div>
-            <div class="inline-copy">
-              <span id="paypalCopyTarget">gabikagwa@gmail.com</span>
-              <button type="button" class="copy-btn" data-copy="paypalCopyTarget">COPY</button>
-            </div>
-          </div>
-
-          <button type="submit" class="btn-submit">Submit Exchange</button>
-        </form>
-      </div>
-
-      <!-- Crypto → PayPal -->
-      <div class="exchange-card">
-        <h3>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 9h13M4 9l4-4M4 9l4 4" />
-            <path d="M20 15H7M20 15l-4-4M20 15l-4 4" />
-          </svg>
-          Crypto → PayPal
-        </h3>
-        <div class="sub">Send crypto & receive PayPal</div>
-
-        <form id="cryptoToPaypal">
-          <div class="form-group">
-            <label>Your PayPal email *</label>
-            <input type="email" name="paypal_email" placeholder="you@example.com" required />
-          </div>
-          <div class="form-group">
-            <label>Which crypto are you sending? *</label>
-            <select name="crypto_send" required>
-              <option value="">— select —</option>
-              <option value="BTC">Bitcoin (BTC)</option>
-              <option value="ETH">Ethereum (ETH)</option>
-              <option value="LTC">Litecoin (LTC)</option>
-              <option value="SOL">Solana (SOL)</option>
-              <option value="USDT">Tether (USDT)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Amount (in crypto) *</label>
-            <input type="text" name="amount_crypto" placeholder="0.005 BTC" required />
-          </div>
-          <div class="form-group">
-            <label>Transaction ID (TXID) *</label>
-            <input type="text" name="txid" placeholder="0x... or transaction hash" required />
-          </div>
-          <div class="form-group">
-            <label>Your Discord username *</label>
-            <input type="text" name="discord_user" placeholder="user#1234" required />
-          </div>
-
-          <div class="address-block">
-            <div class="address-label">📥 send crypto to this address</div>
-            <div class="inline-copy">
-              <span id="cryptoCopyTarget">bc1qt03z0756r5vmq5xh76dzx9svnkan964l3q6txy</span>
-              <button type="button" class="copy-btn" data-copy="cryptoCopyTarget">COPY</button>
-            </div>
-          </div>
-
-          <button type="submit" class="btn-submit">Submit Exchange</button>
-        </form>
-      </div>
-    </div>
-
-    <div style="margin-top: 40px; text-align: center; color: var(--gray-500); font-size: 0.85rem; border-top: 1px solid var(--gray-800); padding-top: 24px;">
-      ⚡ Our team processes orders manually — average ~15 min, max 1 hour (CET timezone).
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="footer-top">
-    <div class="footer-brand">
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
       <a href="index.html" class="logo-block">
         <span class="logo">Yux<span>Market</span></span>
         <span class="logo-sub">YuxXChange</span>
       </a>
-      <p>Digital items &amp; crypto/PayPal exchange — fast and reliable.</p>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#shop">Shop</a>
+        <a href="exchange.html" style="color:var(--orange);">Exchange</a>
+        <a href="index.html#reviews">Reviews</a>
+        <a href="index.html#faq">FAQ</a>
+      </nav>
+      <button class="burger" id="burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <a href="index.html#shop">Netflix</a><a href="index.html#shop">YouTube Premium</a><a href="index.html#shop">Discord Nitro</a>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="index.html#shop">Shop</a>
+      <a href="exchange.html">Exchange</a>
+      <a href="index.html#reviews">Reviews</a>
+      <a href="index.html#faq">FAQ</a>
     </div>
-    <div class="footer-col">
-      <h4>Exchange</h4>
-      <a href="exchange.html">Crypto → PayPal</a><a href="exchange.html">PayPal → Crypto</a>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <a href="#">Live Chat</a><a href="#">Discord</a><a href="#">Contact</a>
-    </div>
-  </div>
-  <div class="footer-bottom"><p>&copy; 2026 YuxMarket. All rights reserved.</p></div>
-</footer>
+  </header>
 
-<div class="toast" id="toast"></div>
+  <main>
+    <section style="padding-top: 20px;">
+      <div class="section-head" style="margin-bottom: 20px;">
+        <span class="tag">Exchange</span>
+        <h2>Crypto <span style="color:var(--orange);">↔</span> PayPal</h2>
+        <p>Fast, reliable exchanges handled by our team.</p>
+      </div>
 
-<script>
-  (function() {
-    // --- burger ---
-    const burger = document.getElementById('burger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (burger && mobileMenu) {
-      burger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('open');
-        burger.classList.toggle('active');
-      });
-      mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('open');
-          burger.classList.remove('active');
+      <div class="exchange-grid">
+
+        <!-- PayPal → Crypto -->
+        <div class="exchange-card">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 9h13M4 9l4-4M4 9l4 4" />
+              <path d="M20 15H7M20 15l-4-4M20 15l-4 4" />
+            </svg>
+            PayPal → Crypto
+          </h3>
+          <div class="sub">Send PayPal, receive crypto · <strong style="color:var(--orange);">15% fee</strong></div>
+
+          <form id="paypalToCrypto">
+            <div class="form-group">
+              <label>PayPal email</label>
+              <input type="email" name="paypal_email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Amount (USD)</label>
+              <input type="number" name="amount_usd" id="ppAmount" placeholder="50.00" step="0.01" min="1" required />
+            </div>
+
+            <div class="estimate-box">
+              <span class="label">You receive ≈</span>
+              <span><span class="value" id="ppReceiveValue">0.00</span> <span style="color:var(--gray-500);font-size:0.8rem;">USD in crypto</span></span>
+              <span class="fee-badge">fee 15%</span>
+            </div>
+
+            <div class="form-group">
+              <label>Crypto to receive</label>
+              <select name="crypto_target" required>
+                <option value="">Select crypto</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="LTC">Litecoin (LTC)</option>
+                <option value="SOL">Solana (SOL)</option>
+                <option value="USDT">Tether (USDT)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Your crypto address</label>
+              <input type="text" name="crypto_address" placeholder="0x... or bc1..." required />
+            </div>
+            <div class="form-group">
+              <label>Discord username</label>
+              <input type="text" name="discord_user" placeholder="user#1234" required />
+            </div>
+
+            <div class="address-block">
+              <div class="address-label">Send PayPal payment to</div>
+              <div class="inline-copy">
+                <span id="paypalCopyTarget">gabikagwa@gmail.com</span>
+                <button type="button" class="copy-btn" data-copy="paypalCopyTarget">COPY</button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Exchange</button>
+          </form>
+        </div>
+
+        <!-- Crypto → PayPal -->
+        <div class="exchange-card">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 9h13M4 9l4-4M4 9l4 4" />
+              <path d="M20 15H7M20 15l-4-4M20 15l-4 4" />
+            </svg>
+            Crypto → PayPal
+          </h3>
+          <div class="sub">Send crypto, receive PayPal · <strong style="color:var(--orange);">7% fee</strong></div>
+
+          <form id="cryptoToPaypal">
+            <div class="form-group">
+              <label>PayPal email</label>
+              <input type="email" name="paypal_email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Crypto you are sending</label>
+              <select name="crypto_send" required>
+                <option value="">Select crypto</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="LTC">Litecoin (LTC)</option>
+                <option value="SOL">Solana (SOL)</option>
+                <option value="USDT">Tether (USDT)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Amount (in crypto)</label>
+              <input type="text" name="amount_crypto" id="cryptoAmount" placeholder="0.005 BTC" required />
+            </div>
+
+            <div class="estimate-box">
+              <span class="label">You receive ≈</span>
+              <span><span class="value" id="cryptoReceiveValue">0.00</span> <span style="color:var(--gray-500);font-size:0.8rem;">USD (PayPal)</span></span>
+              <span class="fee-badge">fee 7%</span>
+            </div>
+
+            <div class="form-group">
+              <label>Transaction ID (TXID)</label>
+              <input type="text" name="txid" placeholder="0x... or transaction hash" required />
+            </div>
+            <div class="form-group">
+              <label>Discord username</label>
+              <input type="text" name="discord_user" placeholder="user#1234" required />
+            </div>
+
+            <div class="address-block">
+              <div class="address-label">Send crypto to this address</div>
+              <div class="inline-copy">
+                <span id="cryptoCopyTarget">bc1qt03z0756r5vmq5xh76dzx9svnkan964l3q6txy</span>
+                <button type="button" class="copy-btn" data-copy="cryptoCopyTarget">COPY</button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Exchange</button>
+          </form>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px; text-align: center; color: var(--gray-500); font-size: 0.85rem; border-top: 1px solid var(--gray-800); padding-top: 24px;">
+        Orders are processed manually — average 15 minutes, maximum 1 hour (CET timezone).
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-block">
+          <span class="logo">Yux<span>Market</span></span>
+          <span class="logo-sub">YuxXChange</span>
+        </a>
+        <p>Digital items and crypto/PayPal exchange — fast and reliable.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="index.html#shop">Netflix</a>
+        <a href="index.html#shop">YouTube Premium</a>
+        <a href="index.html#shop">Discord Nitro</a>
+      </div>
+      <div class="footer-col">
+        <h4>Exchange</h4>
+        <a href="exchange.html">Crypto → PayPal</a>
+        <a href="exchange.html">PayPal → Crypto</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Live Chat</a>
+        <a href="#">Discord</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 YuxMarket. All rights reserved.</p></div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function() {
+      // Burger menu
+      const burger = document.getElementById('burger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (burger && mobileMenu) {
+        burger.addEventListener('click', () => {
+          mobileMenu.classList.toggle('open');
+          burger.classList.toggle('active');
+        });
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            burger.classList.remove('active');
+          });
+        });
+      }
+
+      // Copy buttons
+      document.querySelectorAll('[data-copy]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-copy');
+          const el = document.getElementById(targetId);
+          if (!el) return;
+          const text = el.textContent.trim();
+          navigator.clipboard?.writeText(text).then(() => {
+            showToast('Copied: ' + text.slice(0, 20) + (text.length > 20 ? '…' : ''));
+          }).catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('Copied!');
+          });
         });
       });
-    }
 
-    // --- copy buttons ---
-    document.querySelectorAll('[data-copy]').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const targetId = this.getAttribute('data-copy');
-        const el = document.getElementById(targetId);
-        if (!el) return;
-        const text = el.textContent.trim();
-        navigator.clipboard?.writeText(text).then(() => {
-          showToast('✅ Copied: ' + text.slice(0, 20) + (text.length > 20 ? '…' : ''));
-        }).catch(() => {
-          // fallback
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-          showToast('✅ Copied!');
+      // Toast
+      let toastTimeout;
+
+      function showToast(msg) {
+        const t = document.getElementById('toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => t.classList.remove('show'), 3200);
+      }
+
+      // Live estimates
+      const ppAmount = document.getElementById('ppAmount');
+      const ppReceive = document.getElementById('ppReceiveValue');
+      if (ppAmount && ppReceive) {
+        ppAmount.addEventListener('input', function() {
+          const val = parseFloat(this.value);
+          if (!isNaN(val) && val > 0) {
+            const afterFee = val * 0.85;
+            ppReceive.textContent = afterFee.toFixed(2);
+          } else {
+            ppReceive.textContent = '0.00';
+          }
         });
-      });
-    });
+      }
 
-    // --- toast ---
-    let toastTimeout;
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      if (!t) return;
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => t.classList.remove('show'), 3200);
-    }
-
-    // --- webhook sender ---
-    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1539427263177564233/M3wkPn9_JeFyM5ZnpOLdUffC1R3Xbi11k1c96iPbM8Ew9dubuDDwlYduW77sBjKTSwD2';
-
-    async function sendWebhook(payload) {
-      try {
-        const resp = await fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+      const cryptoAmount = document.getElementById('cryptoAmount');
+      const cryptoReceive = document.getElementById('cryptoReceiveValue');
+      if (cryptoAmount && cryptoReceive) {
+        cryptoAmount.addEventListener('input', function() {
+          const raw = this.value.trim();
+          const match = raw.match(/^([\d.]+)/);
+          if (match) {
+            const num = parseFloat(match[1]);
+            if (!isNaN(num) && num > 0) {
+              const rate = 100;
+              const afterFee = num * rate * 0.93;
+              cryptoReceive.textContent = afterFee.toFixed(2);
+            } else {
+              cryptoReceive.textContent = '0.00';
+            }
+          } else {
+            cryptoReceive.textContent = '0.00';
+          }
         });
-        if (!resp.ok) throw new Error('Webhook failed');
-        return true;
-      } catch (e) {
-        console.warn('Webhook error:', e);
-        return false;
       }
-    }
 
-    function buildEmbed(title, color, fields) {
-      return {
-        embeds: [{
-          title: title,
-          color: color || 0xff7a1a,
-          fields: fields,
-          footer: { text: 'YuxMarket Exchange • ' + new Date().toLocaleString('en-HU', { timeZone: 'Europe/Budapest' }) },
-          timestamp: new Date().toISOString()
-        }]
-      };
-    }
+      // Webhook
+      const WEBHOOK_URL =
+        'https://discord.com/api/webhooks/1539427263177564233/M3wkPn9_JeFyM5ZnpOLdUffC1R3Xbi11k1c96iPbM8Ew9dubuDDwlYduW77sBjKTSwD2';
 
-    // --- PayPal → Crypto ---
-    document.getElementById('paypalToCrypto')?.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const fd = new FormData(this);
-      const data = {
-        paypal_email: fd.get('paypal_email'),
-        amount_usd: fd.get('amount_usd'),
-        crypto_target: fd.get('crypto_target'),
-        crypto_address: fd.get('crypto_address'),
-        discord_user: fd.get('discord_user')
-      };
-      if (!data.paypal_email || !data.amount_usd || !data.crypto_target || !data.crypto_address || !data.discord_user) {
-        showToast('❌ Please fill in all fields.');
-        return;
-      }
-      const submitBtn = this.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = '⏳ Sending...';
-
-      const fields = [
-        { name: '💰 Direction', value: 'PayPal → Crypto', inline: false },
-        { name: '📧 PayPal email', value: data.paypal_email, inline: true },
-        { name: '💵 Amount (USD)', value: data.amount_usd, inline: true },
-        { name: '🪙 Crypto to receive', value: data.crypto_target, inline: true },
-        { name: '🔗 Crypto address', value: data.crypto_address, inline: false },
-        { name: '👾 Discord', value: data.discord_user, inline: true },
-        { name: '📌 PayPal payment sent to', value: 'gabikagwa@gmail.com', inline: false }
-      ];
-      const payload = buildEmbed('🔄 New Exchange: PayPal → Crypto', 0xff7a1a, fields);
-      const ok = await sendWebhook(payload);
-      showToast(ok ? '✅ Exchange submitted! We\'ll process it shortly.' : '⚠️ Submission error, but we got your request. Contact support if needed.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Exchange';
-      this.reset();
-    });
-
-    // --- Crypto → PayPal ---
-    document.getElementById('cryptoToPaypal')?.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const fd = new FormData(this);
-      const data = {
-        paypal_email: fd.get('paypal_email'),
-        crypto_send: fd.get('crypto_send'),
-        amount_crypto: fd.get('amount_crypto'),
-        txid: fd.get('txid'),
-        discord_user: fd.get('discord_user')
-      };
-      if (!data.paypal_email || !data.crypto_send || !data.amount_crypto || !data.txid || !data.discord_user) {
-        showToast('❌ Please fill in all fields.');
-        return;
-      }
-      const submitBtn = this.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = '⏳ Sending...';
-
-      const fields = [
-        { name: '💰 Direction', value: 'Crypto → PayPal', inline: false },
-        { name: '📧 PayPal email (receive)', value: data.paypal_email, inline: true },
-        { name: '🪙 Crypto sent', value: data.crypto_send, inline: true },
-        { name: '📦 Amount', value: data.amount_crypto, inline: true },
-        { name: '🔗 TXID', value: data.txid, inline: false },
-        { name: '👾 Discord', value: data.discord_user, inline: true },
-        { name: '📥 Crypto address (send to)', value: 'bc1qt03z0756r5vmq5xh76dzx9svnkan964l3q6txy', inline: false }
-      ];
-      const payload = buildEmbed('🔄 New Exchange: Crypto → PayPal', 0xff7a1a, fields);
-      const ok = await sendWebhook(payload);
-      showToast(ok ? '✅ Exchange submitted! We\'ll process it shortly.' : '⚠️ Submission error, but we got your request. Contact support if needed.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Exchange';
-      this.reset();
-    });
-
-    // --- smooth scroll for anchor links (from index) ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        const target = document.querySelector(targetId);
-        if (target) {
-          e.preventDefault();
-          const offset = 80;
-          const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          window.scrollTo({ top, behavior: 'smooth' });
+      async function sendWebhook(payload) {
+        try {
+          const resp = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (!resp.ok) throw new Error('Webhook failed');
+          return true;
+        } catch (e) {
+          console.warn('Webhook error:', e);
+          return false;
         }
+      }
+
+      function buildEmbed(title, color, fields) {
+        return {
+          embeds: [{
+            title: title,
+            color: color || 0xff7a1a,
+            fields: fields,
+            footer: { text: 'YuxMarket Exchange • ' + new Date().toLocaleString('en-HU', { timeZone: 'Europe/Budapest' }) },
+            timestamp: new Date().toISOString()
+          }]
+        };
+      }
+
+      // PayPal → Crypto
+      document.getElementById('paypalToCrypto')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        const data = {
+          paypal_email: fd.get('paypal_email'),
+          amount_usd: fd.get('amount_usd'),
+          crypto_target: fd.get('crypto_target'),
+          crypto_address: fd.get('crypto_address'),
+          discord_user: fd.get('discord_user')
+        };
+        if (!data.paypal_email || !data.amount_usd || !data.crypto_target || !data.crypto_address || !data
+          .discord_user) {
+          showToast('Please fill in all fields.');
+          return;
+        }
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        const fields = [
+          { name: 'Direction', value: 'PayPal → Crypto', inline: false },
+          { name: 'PayPal email', value: data.paypal_email, inline: true },
+          { name: 'Amount (USD)', value: data.amount_usd, inline: true },
+          { name: 'Crypto to receive', value: data.crypto_target, inline: true },
+          { name: 'Crypto address', value: data.crypto_address, inline: false },
+          { name: 'Discord', value: data.discord_user, inline: true },
+          { name: 'PayPal payment sent to', value: 'gabikagwa@gmail.com', inline: false }
+        ];
+        const payload = buildEmbed('New Exchange: PayPal → Crypto', 0xff7a1a, fields);
+        const ok = await sendWebhook(payload);
+        showToast(ok ? 'Exchange submitted! We will process it shortly.' :
+          'Submission error, but we got your request. Contact support if needed.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Exchange';
+        this.reset();
+        ppReceive.textContent = '0.00';
       });
-    });
 
-    // --- navbar shadow ---
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 12) navbar.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)';
-      else navbar.style.boxShadow = 'none';
-    });
+      // Crypto → PayPal
+      document.getElementById('cryptoToPaypal')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        const data = {
+          paypal_email: fd.get('paypal_email'),
+          crypto_send: fd.get('crypto_send'),
+          amount_crypto: fd.get('amount_crypto'),
+          txid: fd.get('txid'),
+          discord_user: fd.get('discord_user')
+        };
+        if (!data.paypal_email || !data.crypto_send || !data.amount_crypto || !data.txid || !data.discord_user) {
+          showToast('Please fill in all fields.');
+          return;
+        }
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
 
-  })();
-</script>
+        const fields = [
+          { name: 'Direction', value: 'Crypto → PayPal', inline: false },
+          { name: 'PayPal email (receive)', value: data.paypal_email, inline: true },
+          { name: 'Crypto sent', value: data.crypto_send, inline: true },
+          { name: 'Amount', value: data.amount_crypto, inline: true },
+          { name: 'TXID', value: data.txid, inline: false },
+          { name: 'Discord', value: data.discord_user, inline: true },
+          { name: 'Crypto address (send to)', value: 'bc1qt03z0756r5vmq5xh76dzx9svnkan964l3q6txy', inline: false }
+        ];
+        const payload = buildEmbed('New Exchange: Crypto → PayPal', 0xff7a1a, fields);
+        const ok = await sendWebhook(payload);
+        showToast(ok ? 'Exchange submitted! We will process it shortly.' :
+          'Submission error, but we got your request. Contact support if needed.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Exchange';
+        this.reset();
+        cryptoReceive.textContent = '0.00';
+      });
+
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // Navbar shadow
+      const navbar = document.querySelector('.navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 12) navbar.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)';
+        else navbar.style.boxShadow = 'none';
+      });
+
+    })();
+  </script>
 </body>
 </html>
