@@ -1,5 +1,4 @@
 (function() {
-  // ── Mobile menu ──
   const burger = document.getElementById('burger');
   const mobileMenu = document.getElementById('mobileMenu');
 
@@ -17,7 +16,6 @@
     });
   }
 
-  // ── FAQ accordion ──
   const faqItems = document.querySelectorAll('.faq-item');
   faqItems.forEach(item => {
     const q = item.querySelector('.faq-q');
@@ -27,7 +25,6 @@
     q.addEventListener('click', () => {
       const isOpen = item.classList.contains('open');
 
-      // close all items and reset their heights
       faqItems.forEach(i => {
         i.classList.remove('open');
         const answer = i.querySelector('.faq-a');
@@ -36,13 +33,11 @@
 
       if (!isOpen) {
         item.classList.add('open');
-        // use the answer's actual height so long answers never get clipped
         a.style.maxHeight = a.scrollHeight + 'px';
       }
     });
   });
 
-  // ── Navbar shadow on scroll ──
   const navbar = document.querySelector('.navbar');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 12) {
@@ -52,7 +47,6 @@
     }
   });
 
-  // ── Smooth anchor scroll ──
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
