@@ -157,6 +157,8 @@
       align-items: center;
       font-size: 0.95rem;
       transition: all 0.2s;
+      flex-wrap: wrap;
+      gap: 6px;
     }
     .estimate-box .label {
       color: var(--gray-500);
@@ -172,6 +174,18 @@
       border-radius: 999px;
       font-size: 0.7rem;
       color: var(--gray-300);
+      white-space: nowrap;
+    }
+    .estimate-box .fee-detail {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-left: 4px;
+    }
+    .limit-note {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-top: 2px;
+      font-style: italic;
     }
     @media (max-width: 800px) {
       .exchange-grid {
@@ -236,7 +250,7 @@
       <div class="section-head" style="margin-bottom: 20px;">
         <span class="tag">Exchange</span>
         <h2>Crypto <span style="color:var(--orange);">↔</span> PayPal</h2>
-        <p>Fast, reliable exchanges handled by our team.</p>
+        <p>Fast, reliable exchanges handled by our team. Maximum order: $500 USD.</p>
       </div>
 
       <div class="exchange-grid">
@@ -250,7 +264,7 @@
             </svg>
             PayPal → Crypto
           </h3>
-          <div class="sub">Send PayPal, receive crypto · <strong style="color:var(--orange);">15% fee</strong></div>
+          <div class="sub">Send PayPal, receive crypto · <strong style="color:var(--orange);">15% / 7% fee</strong> <span style="color:var(--gray-500);font-size:0.75rem;">(0-100: 15% | 100-500: 7%)</span></div>
 
           <form id="paypalToCrypto">
             <div class="form-group">
@@ -258,14 +272,15 @@
               <input type="email" name="paypal_email" placeholder="you@example.com" required />
             </div>
             <div class="form-group">
-              <label>Amount (USD)</label>
-              <input type="number" name="amount_usd" id="ppAmount" placeholder="50.00" step="0.01" min="1" required />
+              <label>Amount (USD) · max $500</label>
+              <input type="number" name="amount_usd" id="ppAmount" placeholder="50.00" step="0.01" min="1" max="500" required />
+              <div class="limit-note">Minimum: $1 · Maximum: $500</div>
             </div>
 
-            <div class="estimate-box">
+            <div class="estimate-box" id="ppEstimateBox">
               <span class="label">You receive ≈</span>
               <span><span class="value" id="ppReceiveValue">0.00</span> <span style="color:var(--gray-500);font-size:0.8rem;">USD in crypto</span></span>
-              <span class="fee-badge">fee 15%</span>
+              <span class="fee-badge" id="ppFeeBadge">fee 15%</span>
             </div>
 
             <div class="form-group">
@@ -309,7 +324,7 @@
             </svg>
             Crypto → PayPal
           </h3>
-          <div class="sub">Send crypto, receive PayPal · <strong style="color:var(--orange);">7% fee</strong></div>
+          <div class="sub">Send crypto, receive PayPal · <strong style="color:var(--orange);">15% / 7% fee</strong> <span style="color:var(--gray-500);font-size:0.75rem;">(0-100: 15% | 100-500: 7%)</span></div>
 
           <form id="cryptoToPaypal">
             <div class="form-group">
@@ -328,14 +343,15 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Amount (in crypto)</label>
+              <label>Amount (in crypto) · max $500 USD equivalent</label>
               <input type="text" name="amount_crypto" id="cryptoAmount" placeholder="0.005 BTC" required />
+              <div class="limit-note">Maximum equivalent: $500 USD</div>
             </div>
 
-            <div class="estimate-box">
+            <div class="estimate-box" id="cryptoEstimateBox">
               <span class="label">You receive ≈</span>
               <span><span class="value" id="cryptoReceiveValue">0.00</span> <span style="color:var(--gray-500);font-size:0.8rem;">USD (PayPal)</span></span>
-              <span class="fee-badge">fee 7%</span>
+              <span class="fee-badge" id="cryptoFeeBadge">fee 15%</span>
             </div>
 
             <div class="form-group">
@@ -449,43 +465,63 @@
         toastTimeout = setTimeout(() => t.classList.remove('show'), 3200);
       }
 
-      // Live estimates
+      // --- Fee calculation helper ---
+      function getFee(amount) {
+        if (amount <= 0) return 0;
+        if (amount <= 100) return 0.15; // 15%
+        if (amount <= 500) return 0.07; // 7%
+        return 0.07; // cap at 7% for anything above 500 (but we'll enforce max)
+      }
+
+      // --- PayPal → Crypto live estimate ---
       const ppAmount = document.getElementById('ppAmount');
       const ppReceive = document.getElementById('ppReceiveValue');
-      if (ppAmount && ppReceive) {
+      const ppFeeBadge = document.getElementById('ppFeeBadge');
+      if (ppAmount && ppReceive && ppFeeBadge) {
         ppAmount.addEventListener('input', function() {
           const val = parseFloat(this.value);
           if (!isNaN(val) && val > 0) {
-            const afterFee = val * 0.85;
+            const fee = getFee(val);
+            const afterFee = val * (1 - fee);
             ppReceive.textContent = afterFee.toFixed(2);
+            ppFeeBadge.textContent = 'fee ' + (fee * 100) + '%';
           } else {
             ppReceive.textContent = '0.00';
+            ppFeeBadge.textContent = 'fee 15%';
           }
         });
       }
 
+      // --- Crypto → PayPal live estimate ---
       const cryptoAmount = document.getElementById('cryptoAmount');
       const cryptoReceive = document.getElementById('cryptoReceiveValue');
-      if (cryptoAmount && cryptoReceive) {
+      const cryptoFeeBadge = document.getElementById('cryptoFeeBadge');
+      if (cryptoAmount && cryptoReceive && cryptoFeeBadge) {
         cryptoAmount.addEventListener('input', function() {
           const raw = this.value.trim();
           const match = raw.match(/^([\d.]+)/);
           if (match) {
             const num = parseFloat(match[1]);
             if (!isNaN(num) && num > 0) {
+              // For demo, assume 1 crypto = 100 USD (just for visualization)
               const rate = 100;
-              const afterFee = num * rate * 0.93;
+              const usdValue = num * rate;
+              const fee = getFee(usdValue);
+              const afterFee = usdValue * (1 - fee);
               cryptoReceive.textContent = afterFee.toFixed(2);
+              cryptoFeeBadge.textContent = 'fee ' + (fee * 100) + '%';
             } else {
               cryptoReceive.textContent = '0.00';
+              cryptoFeeBadge.textContent = 'fee 15%';
             }
           } else {
             cryptoReceive.textContent = '0.00';
+            cryptoFeeBadge.textContent = 'fee 15%';
           }
         });
       }
 
-      // Webhook
+      // --- Webhook ---
       const WEBHOOK_URL =
         'https://discord.com/api/webhooks/1539427263177564233/M3wkPn9_JeFyM5ZnpOLdUffC1R3Xbi11k1c96iPbM8Ew9dubuDDwlYduW77sBjKTSwD2';
 
@@ -516,10 +552,19 @@
         };
       }
 
-      // PayPal → Crypto
+      // --- PayPal → Crypto ---
       document.getElementById('paypalToCrypto')?.addEventListener('submit', async function(e) {
         e.preventDefault();
         const fd = new FormData(this);
+        const amount = parseFloat(fd.get('amount_usd'));
+        if (isNaN(amount) || amount < 1) {
+          showToast('Minimum amount is $1 USD.');
+          return;
+        }
+        if (amount > 500) {
+          showToast('Maximum amount is $500 USD.');
+          return;
+        }
         const data = {
           paypal_email: fd.get('paypal_email'),
           amount_usd: fd.get('amount_usd'),
@@ -527,8 +572,7 @@
           crypto_address: fd.get('crypto_address'),
           discord_user: fd.get('discord_user')
         };
-        if (!data.paypal_email || !data.amount_usd || !data.crypto_target || !data.crypto_address || !data
-          .discord_user) {
+        if (!data.paypal_email || !data.crypto_target || !data.crypto_address || !data.discord_user) {
           showToast('Please fill in all fields.');
           return;
         }
@@ -536,10 +580,13 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
 
+        const fee = getFee(amount);
         const fields = [
           { name: 'Direction', value: 'PayPal → Crypto', inline: false },
           { name: 'PayPal email', value: data.paypal_email, inline: true },
           { name: 'Amount (USD)', value: data.amount_usd, inline: true },
+          { name: 'Fee', value: (fee * 100) + '%', inline: true },
+          { name: 'You receive (after fee)', value: (amount * (1 - fee)).toFixed(2) + ' USD in crypto', inline: false },
           { name: 'Crypto to receive', value: data.crypto_target, inline: true },
           { name: 'Crypto address', value: data.crypto_address, inline: false },
           { name: 'Discord', value: data.discord_user, inline: true },
@@ -553,12 +600,31 @@
         submitBtn.textContent = 'Submit Exchange';
         this.reset();
         ppReceive.textContent = '0.00';
+        ppFeeBadge.textContent = 'fee 15%';
       });
 
-      // Crypto → PayPal
+      // --- Crypto → PayPal ---
       document.getElementById('cryptoToPaypal')?.addEventListener('submit', async function(e) {
         e.preventDefault();
         const fd = new FormData(this);
+        const rawAmount = fd.get('amount_crypto');
+        const match = rawAmount.match(/^([\d.]+)/);
+        let usdValue = 0;
+        if (match) {
+          const num = parseFloat(match[1]);
+          if (!isNaN(num) && num > 0) {
+            const rate = 100; // dummy rate for demo
+            usdValue = num * rate;
+          }
+        }
+        if (usdValue < 1) {
+          showToast('Minimum amount is $1 USD equivalent.');
+          return;
+        }
+        if (usdValue > 500) {
+          showToast('Maximum amount is $500 USD equivalent.');
+          return;
+        }
         const data = {
           paypal_email: fd.get('paypal_email'),
           crypto_send: fd.get('crypto_send'),
@@ -574,11 +640,14 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
 
+        const fee = getFee(usdValue);
         const fields = [
           { name: 'Direction', value: 'Crypto → PayPal', inline: false },
           { name: 'PayPal email (receive)', value: data.paypal_email, inline: true },
           { name: 'Crypto sent', value: data.crypto_send, inline: true },
           { name: 'Amount', value: data.amount_crypto, inline: true },
+          { name: 'Fee', value: (fee * 100) + '%', inline: true },
+          { name: 'You receive (after fee)', value: (usdValue * (1 - fee)).toFixed(2) + ' USD (PayPal)', inline: false },
           { name: 'TXID', value: data.txid, inline: false },
           { name: 'Discord', value: data.discord_user, inline: true },
           { name: 'Crypto address (send to)', value: 'bc1qt03z0756r5vmq5xh76dzx9svnkan964l3q6txy', inline: false }
@@ -591,6 +660,7 @@
         submitBtn.textContent = 'Submit Exchange';
         this.reset();
         cryptoReceive.textContent = '0.00';
+        cryptoFeeBadge.textContent = 'fee 15%';
       });
 
       // Smooth scroll
